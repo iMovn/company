@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { useTheme } from "next-themes";
 
-import { Menu, Search, X, Sun, Moon, ChevronDown } from "lucide-react";
+import { Menu, Search, X, ChevronDown } from "lucide-react";
 
 import { fallbackMainMenu } from "@/lib/menu-metadata";
 import { MenuItem } from "@/types/menu";
@@ -13,6 +11,7 @@ import { getMainMenu } from "@/app/api/menu";
 import DesktopNav from "../navigation/desktop-nav";
 import { MobileMenu } from "../navigation/mobile-menu";
 import Logo from "../navigation/logo";
+import ModeToggle from "../theme/mode-toggle";
 
 /**
  * Component navbar chính của ứng dụng
@@ -21,7 +20,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-  const { theme, setTheme } = useTheme();
 
   // Fetch menu data
   useEffect(() => {
@@ -44,7 +42,6 @@ export default function Navbar() {
   // Toggle handlers
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const toggleSearch = () => setSearchOpen(!searchOpen);
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   // Close menu when window is resized to desktop size
   useEffect(() => {
@@ -99,15 +96,7 @@ export default function Navbar() {
             </div>
 
             {/* Theme Toggle */}
-            <button
-              className="text-neutral-100 hover:text-primary transition-colors p-1 rounded-full"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${
-                theme === "dark" ? "light" : "dark"
-              } mode`}
-            >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
+            <ModeToggle />
 
             {/* CTA Button */}
             <Link

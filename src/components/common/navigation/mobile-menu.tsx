@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import Link from "next/link";
 import { MobileNavItem } from "./mobile-nav-item";
 import { MenuItem } from "@/types/menu";
 
@@ -24,13 +24,13 @@ export function MobileMenu({ items, onItemClick }: MobileMenuProps) {
 
         {/* Divider with CTA */}
         <div className="pt-4 mt-2 border-t border-neutral-800">
-          <a
+          <Link
             href="/contact"
             onClick={onItemClick}
             className="flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-md px-4 py-2 text-sm font-medium"
           >
             Get in touch
-          </a>
+          </Link>
         </div>
       </div>
     </div>

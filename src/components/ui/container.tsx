@@ -2,7 +2,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, forwardRef, useEffect, useRef, useState } from "react";
+import { HTMLAttributes, forwardRef, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 
 interface ContainerProps extends HTMLAttributes<HTMLElement> {

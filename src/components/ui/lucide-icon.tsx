@@ -5,15 +5,15 @@ import { createIcons, icons } from "lucide";
 
 // Mở rộng type cho createIcons để chấp nhận tham số root
 interface CreateIconsOptions {
-  icons?: any;
+  icons?: Record<string, string | unknown>;
   nameAttr?: string;
-  attrs?: any;
+  attrs?: Record<string, string | number>;
   root?: HTMLElement;
 }
 
 // Hàm khởi tạo icons với type tùy chỉnh
 function createIconsWithRoot(options: CreateIconsOptions) {
-  return createIcons(options as any);
+  return createIcons(options);
 }
 
 // Khởi tạo icons một lần cho toàn ứng dụng
