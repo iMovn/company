@@ -1,0 +1,16 @@
+/* ============ DARK THEME ============ */
+.dark {
+  --background: var(--color-neutral-1000);
+  --foreground: var(--color-neutral-50);
+  --border: oklch(from var(--color-neutral-800) l c h / 0.5);
+  --input: oklch(from var(--color-neutral-800) l c h / 0.3);
+
+  --primary: var(--color-primary-400);
+  --primary-foreground: var(--color-neutral-900);
+
+  --card: var(--color-neutral-900);
+  --card-foreground: var(--color-neutral-50);
+
+  --destructive: var(--color-error);
+  --destructive-foreground: var(--color-neutral-50);
+}

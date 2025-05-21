@@ -1,0 +1,18 @@
+/* ============ LIGHT THEME ============ */
+:root {
+  --background: var(--color-neutral-0);
+  --foreground: var(--color-neutral-1000);
+  --border: var(--color-neutral-200);
+  --input: var(--color-neutral-200);
+
+  --primary: var(--color-primary-500);
+  --primary-foreground: var(--color-neutral-0);
+
+  --card: var(--color-neutral-0);
+  --card-foreground: var(--color-neutral-1000);
+
+  --destructive: var(--color-error);
+  --destructive-foreground: var(--color-neutral-0);
+
+  --radius: 0.5rem;
+}
