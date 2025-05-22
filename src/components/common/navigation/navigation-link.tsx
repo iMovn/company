@@ -12,22 +12,32 @@ interface NavigationLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
   iconBefore?: React.ReactNode;
   iconAfter?: React.ReactNode;
   active?: boolean;
+  // showIcon?: boolean;
 }
 
 /**
- * Component link cho navigation menu
+ * Component link cho navigation menu với hỗ trợ icons
  */
 const NavigationLink = forwardRef<HTMLAnchorElement, NavigationLinkProps>(
   (
-    { item, baseUrl = "", className, iconBefore, iconAfter, active, ...props },
+    {
+      item,
+      baseUrl = "",
+      className,
+      iconBefore,
+      iconAfter,
+      active,
+      // showIcon = false,
+      ...props
+    },
     ref
   ) => {
     const url = getItemUrl(item, baseUrl);
 
     // Xử lý external link
-    const isExternal = url.startsWith("http");
+    const isExternal = url.startsWith("https");
     const externalProps = isExternal
-      ? { target: "_blank", rel: "noopener noreferrer" }
+      ? { target: "_blank", rel: "noopener noreferrer nofollow" }
       : {};
 
     return (
@@ -44,7 +54,7 @@ const NavigationLink = forwardRef<HTMLAnchorElement, NavigationLinkProps>(
         {...props}
       >
         {iconBefore}
-        <span>{item.name}</span>
+        <span className="flex-1">{item.name}</span>
         {iconAfter}
       </Link>
     );

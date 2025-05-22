@@ -36,14 +36,25 @@ export function NavDropdownLink({
 
   return (
     <NavigationMenuItem className={className}>
-      <NavigationMenuTrigger className="text-neutral-100 hover:text-primary bg-transparent hover:bg-neutral-800/70 focus:bg-neutral-800/70">
-        {item.name}
+      <NavigationMenuTrigger className="text-neutral-100 hover:text-primary bg-transparent hover:bg-neutral-800/70 focus:bg-neutral-800/70 flex items-center">
+        {/* Icon cho menu cha nếu có */}
+        {item.icon && (
+          <LucideIcon
+            name={item.icon}
+            className="mr-2 text-primary"
+            size={16}
+          />
+        )}
+        <Link href={itemUrl} className="flex-1">
+          {item.name}
+        </Link>
       </NavigationMenuTrigger>
 
-      <NavigationMenuContent>
+      <NavigationMenuContent className="bg-neutral-800 dark:bg-neutral-900 bg-radial-[at_0%_100%] from-neutral-900/70 to-transparent to-70%">
         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
           {item.children
             .filter((child) => child.is_active === 1)
+            .sort((a, b) => (a.sort || 0) - (b.sort || 0)) // Sort theo thứ tự nếu có
             .map((child) => {
               const childUrl = getItemUrl(child, itemUrl);
               const description = getMenuItemDescription(child);
@@ -59,6 +70,7 @@ export function NavDropdownLink({
                       )}
                     >
                       <div className="text-sm font-medium leading-none text-neutral-100 flex items-center">
+                        {/* Icon cho menu con */}
                         {child.icon && (
                           <LucideIcon
                             name={child.icon}

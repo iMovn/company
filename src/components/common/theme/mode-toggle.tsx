@@ -33,11 +33,11 @@ const ModeToggle = () => {
   return (
     <Button
       variant="ghost"
-      className="text-neutral-100 hover:text-primary transition-colors p-1 rounded-full"
+      className="text-neutral-100 hover:text-primary transition-colors p-1 rounded-full md:[&_svg]:size-4 [&_svg]:size-4.5"
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
-      {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+      {theme === "dark" ? <Sun /> : <Moon />}
     </Button>
   );
 };

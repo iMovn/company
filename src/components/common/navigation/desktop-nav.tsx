@@ -45,6 +45,7 @@ export default function DesktopNav() {
         {/* Skeleton loading cho menu */}
         {Array(4)
           .fill(0)
+          .sort((a, b) => (a.sort || 0) - (b.sort || 0))
           .map((_, i) => (
             <div
               key={i}
@@ -61,6 +62,7 @@ export default function DesktopNav() {
         <NavigationMenuList className="space-x-1">
           {menuItems
             .filter((item) => item.is_active === 1)
+            .sort((a, b) => (a.sort || 0) - (b.sort || 0))
             .map((item) => (
               <NavMenuItem key={item.id} item={item} />
             ))}

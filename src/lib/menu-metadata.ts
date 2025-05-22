@@ -28,6 +28,8 @@ export const menuDescriptions: Record<string, string> = {
   "graphic-design": "Professional graphic design services",
 
   // Main menu items
+  home: "Welcome to our homepage",
+  "trang-chu": "Trang chủ của chúng tôi",
   work: "Case studies and project showcase",
   "about-us": "Learn more about our company and team",
   about: "Learn more about our company and team",
@@ -72,7 +74,7 @@ export function isActive(item: MenuItem): boolean {
 }
 
 /**
- * Fallback data cho menu chính
+ * Fallback data cho menu chính - cập nhật với icons từ JSON
  */
 export const fallbackMainMenu: MenuItem[] = [
   {
@@ -81,7 +83,7 @@ export const fallbackMainMenu: MenuItem[] = [
     link: "/",
     is_active: 1,
     type: "main",
-    icon: null,
+    icon: "house",
     children: [],
   },
   {
@@ -100,7 +102,7 @@ export const fallbackMainMenu: MenuItem[] = [
         parent_id: 112,
         type: "main",
         sort: 1,
-        icon: "code",
+        icon: "database",
         children: [],
       },
       {
@@ -111,7 +113,7 @@ export const fallbackMainMenu: MenuItem[] = [
         parent_id: 112,
         type: "main",
         sort: 2,
-        icon: "bar-chart",
+        icon: "boxes",
         children: [],
       },
       {
@@ -122,7 +124,7 @@ export const fallbackMainMenu: MenuItem[] = [
         parent_id: 112,
         type: "main",
         sort: 3,
-        icon: "pen-tool",
+        icon: "codesandbox",
         children: [],
       },
     ],

@@ -1,4 +1,4 @@
-import Navbar from "@/components/common/header/nav-main";
+import Header from "@/components/common/header/nav-main";
 import { InitIcons } from "@/components/ui/lucide-icon";
 
 export default async function RSLayout({
@@ -9,8 +9,7 @@ export default async function RSLayout({
   return (
     <>
       <InitIcons />
-
-      <Navbar />
+      <Header />
       <main>{children}</main>
       {/* FOOTER */}
     </>

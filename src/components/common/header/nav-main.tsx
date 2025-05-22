@@ -1,22 +1,26 @@
 "use client";
-
+import { getMainMenu } from "@/app/api/menu";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-import { Menu, Search, X, ChevronDown } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 
 import { fallbackMainMenu } from "@/lib/menu-metadata";
 import { MenuItem } from "@/types/menu";
-import { getMainMenu } from "@/app/api/menu";
 import DesktopNav from "../navigation/desktop-nav";
 import { MobileMenu } from "../navigation/mobile-menu";
 import Logo from "../navigation/logo";
 import ModeToggle from "../theme/mode-toggle";
+import GradientText from "@/components/ui/gradient-text";
+import { Button } from "@/components/ui/button";
+import SearchOverlay from "./search";
+import { Container } from "@/components/ui/container";
+import AnimatedMenuButton from "@/components/ui/animated-menu-button"; //Phiên bản 4
 
 /**
  * Component navbar chính của ứng dụng
  */
-export default function Navbar() {
+export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -42,6 +46,7 @@ export default function Navbar() {
   // Toggle handlers
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const toggleSearch = () => setSearchOpen(!searchOpen);
+  const closeSearch = () => setSearchOpen(false);
 
   // Close menu when window is resized to desktop size
   useEffect(() => {
@@ -56,97 +61,78 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="w-full">
-      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl">
-        <nav className="bg-neutral-900/80 backdrop-blur-md rounded-full py-2 px-4 flex items-center justify-between">
-          {/* Logo */}
-          <Logo />
+    <Container
+      as="header"
+      size="lg"
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
+    >
+      <div className="bg-neutral-900/80 backdrop-blur-md rounded-full py-1.5 px-4 flex items-center justify-between">
+        {/* Logo */}
+        <Logo />
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden ml-2 text-neutral-100 p-1 rounded-full"
-            onClick={toggleMenu}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
+        {/* Desktop Navigation */}
+        <DesktopNav />
+
+        {/* Right Side Utilities */}
+        <div className="flex items-center space-x-3">
+          {/* Search Toggle */}
+          <Button
+            variant="ghost"
+            className="flex text-neutral-100 hover:text-primary transition-colors p-1 rounded-full md:[&_svg]:size-4 [&_svg]:size-4.5"
+            onClick={toggleSearch}
+            aria-label="Search"
           >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            <Search />
+          </Button>
 
-          {/* Desktop Navigation */}
-          <DesktopNav />
+          {/* Theme Toggle */}
+          <ModeToggle />
 
-          {/* Right Side Utilities */}
-          <div className="flex items-center space-x-3">
-            {/* Search Toggle */}
-            <button
-              className="text-neutral-100 hover:text-primary transition-colors p-1 rounded-full"
-              onClick={toggleSearch}
-              aria-label="Search"
-            >
-              <Search size={18} />
-            </button>
+          {/* Animated Mobile Menu Button */}
+          <AnimatedMenuButton isOpen={menuOpen} onClick={toggleMenu} />
 
-            {/* Availability Badge */}
-            <div className="hidden md:flex items-center text-xs bg-neutral-800 rounded-full px-3 py-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-red-500 mr-2"></span>
-              <span className="text-neutral-100">
-                1 Slot{" "}
-                <span className="text-neutral-400">remaining this quarter</span>
-              </span>
+          {/* Availability Badge */}
+          <div className="hidden md:flex items-center text-xs px-3 py-1.5">
+            <div className="relative mr-6 mb-1.5">
+              <span className="absolute w-2 h-2 rounded-full bg-red-500 "></span>
+              <span className="absolute w-2 h-2 rounded-full bg-red-500 animate-pulse-soft"></span>
             </div>
 
-            {/* Theme Toggle */}
-            <ModeToggle />
-
-            {/* CTA Button */}
-            <Link
-              href="/contact"
-              className="hidden md:flex items-center justify-center bg-neutral-100 text-neutral-900 hover:bg-primary hover:text-neutral-100 transition-colors rounded-full px-4 py-1.5 text-sm font-medium"
-            >
-              Get in touch
-              <div className="ml-1 bg-neutral-900 text-neutral-100 rounded-full w-5 h-5 flex items-center justify-center">
-                <ChevronDown size={14} />
-              </div>
-            </Link>
+            <span className="text-neutral-100">
+              <span>1 Slot </span>
+              <br />
+              <span className="text-neutral-400">còn lại trong quý này</span>
+            </span>
           </div>
-        </nav>
 
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <MobileMenu
-            items={menuItems}
-            onItemClick={() => setMenuOpen(false)}
-          />
-        )}
+          {/* CTA Button */}
+          <Link
+            href="/contact"
+            className="hidden md:flex items-center justify-center bg-gray-600 text-neutral-900 hover:bg-gray-700 hover:text-neutral-100 transition-colors rounded-full px-4 py-2 text-sm font-medium"
+          >
+            <GradientText
+              colors={["#40ffaa", "#4079ff", "#40ffaa"]}
+              animationSpeed={3}
+              showBorder={false}
+              className="text-sm"
+            >
+              Liên hệ #iMovn
+            </GradientText>
 
-        {/* Search Overlay */}
-        {searchOpen && (
-          <div className="absolute top-14 left-0 w-full bg-neutral-900/95 backdrop-blur-md rounded-xl p-4 shadow-lg fade-in z-40">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full bg-neutral-800 text-neutral-100 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-primary"
-                autoFocus
-              />
-              <Search
-                className="absolute left-3 top-2.5 text-neutral-400"
-                size={18}
-              />
-              <button
-                className="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-100 transition-colors"
-                onClick={toggleSearch}
-                aria-label="Close search"
-              >
-                <X size={18} />
-              </button>
+            <div className="ml-1 bg-primary text-neutral-100 rounded-full w-5 h-5 flex items-center justify-center">
+              <ChevronDown size={14} />
             </div>
-            <div className="mt-3 text-xs text-neutral-400">
-              Press ESC to close search
-            </div>
-          </div>
-        )}
+          </Link>
+        </div>
       </div>
-    </header>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <MobileMenu items={menuItems} onItemClick={() => setMenuOpen(false)} />
+      )}
+
+      {/* Search Overlay */}
+      {searchOpen && <SearchOverlay onClose={closeSearch} />}
+    </Container>
   );
 }

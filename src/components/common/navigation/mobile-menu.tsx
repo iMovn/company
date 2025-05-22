@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { MobileNavItem } from "./mobile-nav-item";
 import { MenuItem } from "@/types/menu";
+import GradientText from "@/components/ui/gradient-text";
+import { Container } from "@/components/ui/container";
 
 interface MobileMenuProps {
   items: MenuItem[];
@@ -14,25 +16,38 @@ interface MobileMenuProps {
  */
 export function MobileMenu({ items, onItemClick }: MobileMenuProps) {
   return (
-    <div className="md:hidden absolute top-14 left-0 w-full bg-neutral-900/95 backdrop-blur-md rounded-xl p-4 shadow-lg fade-in z-50">
-      <div className="flex flex-col space-y-1">
-        {items
-          .filter((item) => item.is_active === 1)
-          .map((item) => (
-            <MobileNavItem key={item.id} item={item} onClick={onItemClick} />
-          ))}
+    <div className="md:hidden absolute top-14 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1024px]">
+      <Container
+        size="lg"
+        className="bg-radial-[at_50%_0%] from-neutral-900/70 to-transparent to-70% backdrop-blur-md rounded-xl p-4 shadow-xs shadow-neutral-900/30 fade-in"
+      >
+        <div className="flex flex-col space-y-1">
+          {items
+            .filter((item) => item.is_active === 1)
+            .sort((a, b) => (a.sort || 0) - (b.sort || 0))
+            .map((item) => (
+              <MobileNavItem key={item.id} item={item} onClick={onItemClick} />
+            ))}
 
-        {/* Divider with CTA */}
-        <div className="pt-4 mt-2 border-t border-neutral-800">
-          <Link
-            href="/contact"
-            onClick={onItemClick}
-            className="flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-md px-4 py-2 text-sm font-medium"
-          >
-            Get in touch
-          </Link>
+          {/* Divider with CTA */}
+          <div className="pt-4 mt-2 border-t border-neutral-800">
+            <Link
+              href="/contact"
+              onClick={onItemClick}
+              className="flex items-center justify-center bg-gray-600 text-neutral-900 hover:bg-gray-700 transition-colors rounded-md px-4 py-2 text-sm font-medium"
+            >
+              <GradientText
+                colors={["#40ffaa", "#4079ff", "#40ffaa"]}
+                animationSpeed={3}
+                showBorder={false}
+                className="text-sm"
+              >
+                Liên hệ #iMovn
+              </GradientText>
+            </Link>
+          </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

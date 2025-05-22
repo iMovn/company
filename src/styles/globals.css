@@ -4,6 +4,7 @@
 /* Custom variant for dark mode */
 @custom-variant dark (&:is(.dark *));
 @import "./theme/index.css";
+@import "./animate.css";
 
 /* ============ BASE STYLES ============ */
 @layer base {
@@ -37,15 +38,17 @@
 
 /* ============ CUSTOM UTILITIES ============ */
 @layer utilities {
-  .animation-delay-100 {
-    animation-delay: 0.1s;
-  }
-  .animation-delay-200 {
-    animation-delay: 0.2s;
+  /* Animation utilities */
+  .animate-gradient {
+    animation: gradientMove 8s linear infinite; /* gradientMove animate.css*/
   }
 
-  .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  .animation-appear {
+    animation: appear 0.5s ease-in-out;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 1.5s ease-in-out infinite;
   }
 }
 
