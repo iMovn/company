@@ -1,5 +1,5 @@
-import Header from "@/components/common/header/nav-main";
-import { InitIcons } from "@/components/ui/lucide-icon";
+import HeaderServer from "@components/common/header/header.server";
+import { InitIcons } from "@components/ui/lucide-icon";
 
 export default async function RSLayout({
   children,
@@ -9,9 +9,8 @@ export default async function RSLayout({
   return (
     <>
       <InitIcons />
-      <Header />
+      <HeaderServer />
       <main>{children}</main>
-      {/* FOOTER */}
     </>
   );
 }

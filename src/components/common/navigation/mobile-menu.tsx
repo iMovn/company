@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { MobileNavItem } from "./mobile-nav-item";
-import { MenuItem } from "@/types/menu";
-import GradientText from "@/components/ui/gradient-text";
-import { Container } from "@/components/ui/container";
+import { MenuItem } from "@shared/types/menu";
+import { Container } from "@components/ui/container";
+import GradientText from "@components/ui/gradient-text";
 
-interface MobileMenuProps {
+interface Props {
   items: MenuItem[];
   onItemClick: () => void;
 }
@@ -14,12 +14,12 @@ interface MobileMenuProps {
 /**
  * Component menu cho mobile
  */
-export function MobileMenu({ items, onItemClick }: MobileMenuProps) {
+export function MobileMenu({ items, onItemClick }: Props) {
   return (
     <div className="md:hidden absolute top-14 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1024px]">
       <Container
         size="lg"
-        className="bg-radial-[at_50%_0%] from-neutral-900/70 to-transparent to-70% backdrop-blur-md rounded-xl p-4 shadow-xs shadow-neutral-900/30 fade-in"
+        className="bg-neutral-800 dark:bg-neutral-900 bg-radial-[at_0%_100%] from-[#1e1e1e] to-transparent to-70% backdrop-blur-md rounded-xl p-4 shadow-xs shadow-neutral-900/30 fade-in"
       >
         <div className="flex flex-col space-y-1">
           {items

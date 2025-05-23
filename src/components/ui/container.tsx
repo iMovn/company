@@ -1,9 +1,9 @@
 // components/ui/container.tsx
 "use client";
 
-import { cn } from "@/lib/utils";
 import { HTMLAttributes, forwardRef, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
+import { cn } from "@shared/lib/utils";
 
 interface ContainerProps extends HTMLAttributes<HTMLElement> {
   as?: React.ElementType;

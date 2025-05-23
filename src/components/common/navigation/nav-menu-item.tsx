@@ -1,12 +1,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { NavigationMenuItem } from "@/components/ui/navigation-menu";
 import { NavDropdownLink } from "./nav-dropdown-link";
-import { MenuItem } from "@/types/menu";
-import { getItemUrl } from "@/lib/menu-metadata";
 import { NavigationLink } from "./navigation-link";
-import { LucideIcon } from "@/components/ui/lucide-icon";
+import { getItemUrl } from "@shared/lib/menu-metadata";
+import { NavigationMenuItem } from "@components/ui/navigation-menu";
+import { LucideIcon } from "@components/ui/lucide-icon";
+import { MenuItem } from "@shared/types/menu";
 
 interface NavMenuItemProps {
   item: MenuItem;

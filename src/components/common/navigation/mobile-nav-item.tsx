@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { LucideIcon } from "@/components/ui/lucide-icon";
-import { MenuItem } from "@/types/menu";
-import { getItemUrl } from "@/lib/menu-metadata";
-import { cn } from "@/lib/utils";
 import { NavigationLink } from "./navigation-link";
-import { Button } from "@/components/ui/button";
+import { MenuItem } from "@shared/types/menu";
+import { getItemUrl } from "@shared/lib/menu-metadata";
+import { cn } from "@shared/lib/utils";
+import { LucideIcon } from "@components/ui/lucide-icon";
+import { Button } from "@components/ui/button";
 
 interface MobileNavItemProps {
   item: MenuItem;
@@ -20,6 +20,7 @@ interface MobileNavItemProps {
 /**
  * Component item menu mobile với hỗ trợ phân cấp
  */
+
 export function MobileNavItem({
   item,
   baseUrl = "",
@@ -37,14 +38,20 @@ export function MobileNavItem({
   // Toggle dropdown
   const toggleDropdown = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation(); // Ngăn event bubbling
     setIsOpen(!isOpen);
   };
 
   // Click handler
   const handleClick = () => {
-    if (!hasChildren && onClick) {
+    // Close menu khi click vào bất kỳ navigation link nào
+    if (onClick) {
       onClick();
     }
+    // Close menu item có child
+    // if (!hasChildren && onClick) {
+    //   onClick();
+    // }
   };
 
   return (

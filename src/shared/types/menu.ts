@@ -15,5 +15,3 @@ export interface MenuResponse {
   message: string;
   data: MenuItem[];
 }
-
-export type MenuType = "main" | "footer" | "social";

@@ -1,4 +1,4 @@
-import { MenuItem } from "@/types/menu";
+import { MenuItem } from "@shared/types/menu";
 
 /**
  * Map các mô tả cho menu items

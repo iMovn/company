@@ -1,20 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import * as React from "react";
+import { Button } from "@components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
-const ModeToggle = () => {
+const ThemeToggler = () => {
   const { theme, setTheme } = useTheme();
   // Thêm state để theo dõi xem component đã mount hay chưa
-  const [mounted, setMounted] = useState(false);
-  // Đánh dấu component đã mount
-  useEffect(() => {
+  const [mounted, setMounted] = React.useState(false);
+  // Tránh hydration mismatch
+  React.useEffect(() => {
     setMounted(true);
   }, []);
-
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   // Nếu component chưa mount, render một button "trống" để giữ layout
   // Điều này đảm bảo SSR và CSR sẽ render cùng một DOM structure
@@ -25,11 +23,12 @@ const ModeToggle = () => {
         className="text-neutral-100 hover:text-primary p-1 rounded-full"
         aria-label="Toggle theme"
       >
-        <div className="w-[18px] h-[18px]" />
+        <Sun className="h-[1.2rem] w-[1.2rem]" />
+        <span className="sr-only">Toggle theme</span>
       </Button>
     );
   }
-
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   return (
     <Button
       variant="ghost"
@@ -42,4 +41,4 @@ const ModeToggle = () => {
   );
 };
 
-export default ModeToggle;
+export default ThemeToggler;

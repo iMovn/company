@@ -1,25 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { SettingsData } from "@/types/setting";
-import { fetchSettings } from "@/app/api/setting";
+import { SettingsData } from "@shared/types/setting";
+import { DOMAIN_URL } from "@shared/constants/global";
 
-const Logo = () => {
-  const [settings, setSettings] = useState<SettingsData | null>(null);
-  useEffect(() => {
-    const getData = async () => {
-      const data = await fetchSettings();
-      setSettings(data);
-    };
-    getData();
-  }, []);
+type Props = {
+  initialLogo: SettingsData;
+};
 
+const Logo = ({ initialLogo }: Props) => {
   return (
     <div className="flex-shrink-0 bg-transparent">
-      <Link href="/" className="flex items-center">
+      <Link href={DOMAIN_URL || "/"} className="flex items-center">
         <div className="md:w-11 w-9.5 md:h-11 h-9.5 relative">
           <Image
-            src={`${settings?.logo || "/logos/imo-vn-brand.png"}`}
+            src={`${initialLogo?.logo || "/logos/imo-vn-brand.png"}`}
             alt="Logo"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
