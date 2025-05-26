@@ -3,10 +3,10 @@
 import { usePathname } from "next/navigation";
 import { NavDropdownLink } from "./nav-dropdown-link";
 import { NavigationLink } from "./navigation-link";
-import { getItemUrl } from "@shared/lib/menu-metadata";
-import { NavigationMenuItem } from "@components/ui/navigation-menu";
-import { LucideIcon } from "@components/ui/lucide-icon";
-import { MenuItem } from "@shared/types/menu";
+import { getItemUrl } from "lib/data/menu-metadata";
+import { MenuItem } from "types/menu";
+import { NavigationMenuItem } from "@components/ui/NavigationMenu";
+import { LucideIcon } from "@components/ui/LucideIcon";
 
 interface NavMenuItemProps {
   item: MenuItem;

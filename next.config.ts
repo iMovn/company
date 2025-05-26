@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Bật cache
   experimental: {
     useCache: true,
+    optimizePackageImports: ["lucide-react"],
   },
 
   // Bật nén gzip cho response HTML, JSON, v.v...

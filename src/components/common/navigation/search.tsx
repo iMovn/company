@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
-import { Button } from "@components/ui/button";
+import { Button } from "@components/ui/Button";
 
 interface SearchOverlayProps {
   onClose: () => void;

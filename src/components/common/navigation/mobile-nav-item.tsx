@@ -4,11 +4,11 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { NavigationLink } from "./navigation-link";
-import { MenuItem } from "@shared/types/menu";
-import { getItemUrl } from "@shared/lib/menu-metadata";
-import { cn } from "@shared/lib/utils";
-import { LucideIcon } from "@components/ui/lucide-icon";
-import { Button } from "@components/ui/button";
+import { MenuItem } from "types/menu";
+import { getItemUrl } from "lib/data/menu-metadata";
+import { cn } from "lib/utils/utils";
+import { Button } from "@components/ui/Button";
+import { LucideIcon } from "@components/ui/LucideIcon";
 
 interface MobileNavItemProps {
   item: MenuItem;

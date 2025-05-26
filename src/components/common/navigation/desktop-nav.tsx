@@ -1,11 +1,11 @@
 "use client";
-import { NavMenuItem } from "./nav-menu-item";
-import { useEffect } from "react";
-import { MenuItem } from "@shared/types/menu";
 import {
   NavigationMenu,
   NavigationMenuList,
-} from "@components/ui/navigation-menu";
+} from "@components/ui/NavigationMenu";
+import { NavMenuItem } from "./nav-menu-item";
+import { useEffect } from "react";
+import { MenuItem } from "types/menu";
 
 type Props = {
   initialMenu: MenuItem[];

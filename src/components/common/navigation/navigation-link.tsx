@@ -2,9 +2,9 @@
 
 import { forwardRef } from "react";
 import Link from "next/link";
-import { MenuItem } from "@shared/types/menu";
-import { getItemUrl } from "@shared/lib/menu-metadata";
-import { cn } from "@shared/lib/utils";
+import { MenuItem } from "types/menu";
+import { getItemUrl } from "lib/data/menu-metadata";
+import { cn } from "lib/utils/utils";
 
 interface NavigationLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
   item: MenuItem;

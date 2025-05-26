@@ -1,16 +1,16 @@
 "use client";
 
-import { LucideIcon } from "@components/ui/lucide-icon";
+import { getItemUrl, getMenuItemDescription } from "lib/data/menu-metadata";
+import { cn } from "lib/utils/utils";
+import { MenuItem } from "types/menu";
+import Link from "next/link";
 import {
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuTrigger,
-} from "@components/ui/navigation-menu";
-import { getItemUrl, getMenuItemDescription } from "@shared/lib/menu-metadata";
-import { cn } from "@shared/lib/utils";
-import { MenuItem } from "@shared/types/menu";
-import Link from "next/link";
+} from "@components/ui/NavigationMenu";
+import { LucideIcon } from "@components/ui/LucideIcon";
 
 interface NavDropdownLinkProps {
   item: MenuItem;

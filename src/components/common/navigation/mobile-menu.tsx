@@ -1,20 +1,21 @@
+// components/navigation/mobile-menu.tsx
 "use client";
 
 import Link from "next/link";
 import { MobileNavItem } from "./mobile-nav-item";
-import { MenuItem } from "@shared/types/menu";
-import { Container } from "@components/ui/container";
-import GradientText from "@components/ui/gradient-text";
+import type { MenuItem } from "types/menu";
+import GradientText from "@components/ui/GradientText";
+import { Container } from "@components/ui/Containers";
 
 interface Props {
   items: MenuItem[];
-  onItemClick: () => void;
+  onItemClick?: () => void; // Thêm optional chaining
 }
 
-/**
- * Component menu cho mobile
- */
-export function MobileMenu({ items, onItemClick }: Props) {
+export function MobileMenu({ items, onItemClick = () => {} }: Props) {
+  const activeItems = items
+    .filter((item) => item.is_active === 1)
+    .sort((a, b) => (a.sort || 0) - (b.sort || 0));
   return (
     <div className="md:hidden absolute top-14 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1024px]">
       <Container
@@ -22,12 +23,9 @@ export function MobileMenu({ items, onItemClick }: Props) {
         className="bg-neutral-800 dark:bg-neutral-900 bg-radial-[at_0%_100%] from-[#1e1e1e] to-transparent to-70% backdrop-blur-md rounded-xl p-4 shadow-xs shadow-neutral-900/30 fade-in"
       >
         <div className="flex flex-col space-y-1">
-          {items
-            .filter((item) => item.is_active === 1)
-            .sort((a, b) => (a.sort || 0) - (b.sort || 0))
-            .map((item) => (
-              <MobileNavItem key={item.id} item={item} onClick={onItemClick} />
-            ))}
+          {activeItems.map((item) => (
+            <MobileNavItem key={item.id} item={item} onClick={onItemClick} />
+          ))}
 
           {/* Divider with CTA */}
           <div className="pt-4 mt-2 border-t border-neutral-800">

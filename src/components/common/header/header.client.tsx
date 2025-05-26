@@ -1,34 +1,38 @@
 "use client";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { Search, ChevronDown } from "lucide-react";
-import DesktopNav from "../navigation/desktop-nav";
-import { MobileMenu } from "../navigation/mobile-menu";
 import Logo from "../navigation/logo";
-import SearchOverlay from "../navigation/search";
-import { MenuItem } from "@shared/types/menu";
-import { Container } from "@components/ui/container";
-import { Button } from "@components/ui/button";
-import { AnimatedMenuButtonMorph } from "@components/ui/animated-menu-button"; //Phiên bản 4
-import GradientText from "@components/ui/gradient-text";
-import { SettingsData } from "@shared/types/setting";
+import { MenuItem } from "types/menu";
+import { SettingsData } from "types/setting";
+import { useMobileMenu } from "lib/hooks/useMenu";
+import { Container } from "@components/ui/Containers";
+import { Button } from "@components/ui/Button";
 import ThemeToggler from "../navigation/theme-toggle";
-import { useMobileMenu } from "@hooks/useMenu";
+import AnimatedMenuButtonMorph from "@components/ui/Animated/ToggleButton";
+import GradientText from "@components/ui/GradientText";
+
+import { NavSkeleton } from "@components/ui/SkeletonSection";
+
+// Dynamic imports cho các components nặng
+const DesktopNav = dynamic(() => import("../navigation/desktop-nav"));
+const MobileMenu = dynamic(
+  () => import("../navigation/mobile-menu").then((mod) => mod.MobileMenu),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="md:hidden absolute top-14 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1024px] p-4"></div>
+    ),
+  }
+);
+const SearchOverlay = dynamic(() => import("../navigation/search"));
 
 type Props = {
   menu: MenuItem[]; // Main menu từ SSR để fallback và desktop nav
-  settings: SettingsData;
+  settings: SettingsData | null;
 };
 
-/**
- * Component navbar chính của ứng dụng
- *
- * Tại sao tách menu desktop và mobile?
- * 1. Desktop: Sử dụng main menu (từ SSR) - ổn định, không cần loading
- * 2. Mobile: Có thể có menu riêng tối ưu UX - fetch client-side
- * 3. Fallback: Mobile dùng main menu nếu không có menu riêng
- * 4. Performance: Desktop render ngay, mobile có loading state
- */
 export default function HeaderClient({ settings, menu }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -39,19 +43,11 @@ export default function HeaderClient({ settings, menu }: Props) {
     mobileMenu,
     isLoading: isMobileMenuLoading,
     error: mobileMenuError,
-    menuSource,
   } = useMobileMenu(menu); // menu (main) làm fallback
 
   // Toggle handlers
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const toggleSearch = () => setSearchOpen(!searchOpen);
-  const closeSearch = () => setSearchOpen(false);
-
-  // Debug info trong development
-  if (process.env.NODE_ENV === "development" && menuOpen) {
-    console.log(`📱 Mobile menu source: ${menuSource}`);
-    console.log(`📱 Mobile menu items: ${mobileMenu.length}`);
-  }
 
   return (
     <Container
@@ -61,10 +57,12 @@ export default function HeaderClient({ settings, menu }: Props) {
     >
       <div className="bg-neutral-900/80 backdrop-blur-md rounded-full py-1.5 px-4 flex items-center justify-between">
         {/* Logo */}
-        <Logo initialLogo={settings} />
+        {settings && <Logo initialLogo={settings.logo} />}
 
-        {/* Desktop Navigation */}
-        <DesktopNav initialMenu={menu} />
+        {/* Desktop Navigation with MenuSkeleton */}
+        <Suspense fallback={<NavSkeleton />}>
+          <DesktopNav initialMenu={menu} />
+        </Suspense>
 
         {/* Right Side Utilities */}
         <div className="flex items-center space-x-3">
@@ -121,7 +119,7 @@ export default function HeaderClient({ settings, menu }: Props) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu với Suspense */}
       {menuOpen && (
         <>
           {isMobileMenuLoading ? (
@@ -168,7 +166,7 @@ export default function HeaderClient({ settings, menu }: Props) {
       )}
 
       {/* Search Overlay */}
-      {searchOpen && <SearchOverlay onClose={closeSearch} />}
+      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
     </Container>
   );
 }
