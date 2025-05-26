@@ -38,7 +38,6 @@ export default function HeaderClient({ settings, menu }: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   // Fetch mobile menu với fallback logic
-  // Tại sao client-side? Để không block SSR và có loading state tốt
   const {
     mobileMenu,
     isLoading: isMobileMenuLoading,

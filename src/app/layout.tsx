@@ -49,7 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <body
         className={cn(
-          "min-h-screen bg-background font-archivo antialiased",
+          "bg-background font-archivo antialiased",
           "selection:bg-primary/20 selection:text-primary-foreground",
           "overflow-x-hidden"
         )}
@@ -58,7 +58,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ToastProvider>
             <InitIcons />
             <HeaderServer />
-            <div className="relative flex min-h-screen flex-col">
+            <div className="relative flex flex-col min-h-screen">
               {children}
             </div>
             <ScrollToTop />

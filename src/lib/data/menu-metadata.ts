@@ -57,7 +57,7 @@ export function getMenuItemDescription(item: MenuItem): string {
  */
 export function getItemUrl(item: MenuItem, parentUrl: string = ""): string {
   // Nếu là URL tuyệt đối hoặc external
-  if (item.link.startsWith("/") || item.link.startsWith("http")) {
+  if (item.link.startsWith("/") || item.link.startsWith("https")) {
     return item.link;
   }
 
@@ -76,84 +76,84 @@ export function isActive(item: MenuItem): boolean {
 /**
  * Fallback data cho menu chính - cập nhật với icons từ JSON
  */
-export const fallbackMainMenu: MenuItem[] = [
-  {
-    id: 111,
-    name: "Trang chủ",
-    link: "/",
-    is_active: 1,
-    type: "main",
-    icon: "house",
-    children: [],
-  },
-  {
-    id: 112,
-    name: "Services",
-    link: "services",
-    is_active: 1,
-    type: "main",
-    icon: null,
-    children: [
-      {
-        id: 113,
-        name: "Development",
-        link: "development",
-        is_active: 1,
-        parent_id: 112,
-        type: "main",
-        sort: 1,
-        icon: "database",
-        children: [],
-      },
-      {
-        id: 114,
-        name: "Growth",
-        link: "growth",
-        is_active: 1,
-        parent_id: 112,
-        type: "main",
-        sort: 2,
-        icon: "boxes",
-        children: [],
-      },
-      {
-        id: 115,
-        name: "Design",
-        link: "design",
-        is_active: 1,
-        parent_id: 112,
-        type: "main",
-        sort: 3,
-        icon: "codesandbox",
-        children: [],
-      },
-    ],
-  },
-  {
-    id: 116,
-    name: "Work",
-    link: "work",
-    is_active: 1,
-    type: "main",
-    icon: null,
-    children: [],
-  },
-  {
-    id: 117,
-    name: "About",
-    link: "about-us",
-    is_active: 1,
-    type: "main",
-    icon: null,
-    children: [],
-  },
-  {
-    id: 119,
-    name: "Blog",
-    link: "blog",
-    is_active: 1,
-    type: "main",
-    icon: null,
-    children: [],
-  },
-];
+// export const fallbackMainMenu: MenuItem[] = [
+//   {
+//     id: 111,
+//     name: "Trang chủ",
+//     link: "/",
+//     is_active: 1,
+//     type: "main",
+//     icon: "house",
+//     children: [],
+//   },
+//   {
+//     id: 112,
+//     name: "Services",
+//     link: "services",
+//     is_active: 1,
+//     type: "main",
+//     icon: null,
+//     children: [
+//       {
+//         id: 113,
+//         name: "Development",
+//         link: "development",
+//         is_active: 1,
+//         parent_id: 112,
+//         type: "main",
+//         sort: 1,
+//         icon: "database",
+//         children: [],
+//       },
+//       {
+//         id: 114,
+//         name: "Growth",
+//         link: "growth",
+//         is_active: 1,
+//         parent_id: 112,
+//         type: "main",
+//         sort: 2,
+//         icon: "boxes",
+//         children: [],
+//       },
+//       {
+//         id: 115,
+//         name: "Design",
+//         link: "design",
+//         is_active: 1,
+//         parent_id: 112,
+//         type: "main",
+//         sort: 3,
+//         icon: "codesandbox",
+//         children: [],
+//       },
+//     ],
+//   },
+//   {
+//     id: 116,
+//     name: "Work",
+//     link: "work",
+//     is_active: 1,
+//     type: "main",
+//     icon: null,
+//     children: [],
+//   },
+//   {
+//     id: 117,
+//     name: "About",
+//     link: "about-us",
+//     is_active: 1,
+//     type: "main",
+//     icon: null,
+//     children: [],
+//   },
+//   {
+//     id: 119,
+//     name: "Blog",
+//     link: "blog",
+//     is_active: 1,
+//     type: "main",
+//     icon: null,
+//     children: [],
+//   },
+// ];

@@ -1,3 +1,4 @@
+import { REVALIDATE_TIMES } from "lib/constants/cache-tags";
 import { API_BASE_URL, DOMAIN_ID } from "lib/constants/global";
 import { cache } from "react";
 import type { MenuItem, MenuResponse } from "types/menu";
@@ -9,7 +10,7 @@ const fetchMenuData = async (type: "main" | "mobile"): Promise<MenuItem[]> => {
       `${API_BASE_URL}/site/menu?type=${type}&domain_id=${DOMAIN_ID}`,
       {
         next: {
-          revalidate: 600, // 10 phút
+          revalidate: REVALIDATE_TIMES.DYNAMIC,
           tags: [`menu-${type}`],
         },
       }

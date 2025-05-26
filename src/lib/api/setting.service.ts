@@ -1,4 +1,5 @@
-import { API_BASE_URL, CACHE_TTL, DOMAIN_ID } from "lib/constants/global";
+import { REVALIDATE_TIMES } from "lib/constants/cache-tags";
+import { API_BASE_URL, DOMAIN_ID } from "lib/constants/global";
 import { cache } from "react";
 import type { SettingResponse, SettingsData } from "types/setting";
 
@@ -8,7 +9,7 @@ const fetchSettingsData = async (): Promise<SettingsData> => {
     `${API_BASE_URL}/site/settings?domain_id=${DOMAIN_ID}`,
     {
       next: {
-        revalidate: CACHE_TTL,
+        revalidate: REVALIDATE_TIMES.DYNAMIC,
         tags: ["site-settings"],
       },
     }

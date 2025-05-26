@@ -1,3 +1,5 @@
+import { Container } from "@components/ui/Containers";
+
 export default function Footer() {
-  return <div>Footer</div>;
+  return <Container as="footer">Footer</Container>;
 }
