@@ -15,7 +15,9 @@ export default function PostCard({ post }: PostCardProps) {
             src={post.image_url}
             alt={post.name}
             fill
-            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover select-none"
+            loading="lazy"
           />
         </div>
       )}

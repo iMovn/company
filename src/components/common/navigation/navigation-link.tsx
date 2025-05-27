@@ -8,31 +8,17 @@ import { cn } from "lib/utils/utils";
 
 interface NavigationLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
   item: MenuItem;
-  baseUrl?: string;
   iconBefore?: React.ReactNode;
   iconAfter?: React.ReactNode;
   active?: boolean;
-  // showIcon?: boolean;
 }
 
 /**
  * Component link cho navigation menu với hỗ trợ icons
  */
 const NavigationLink = forwardRef<HTMLAnchorElement, NavigationLinkProps>(
-  (
-    {
-      item,
-      baseUrl = "",
-      className,
-      iconBefore,
-      iconAfter,
-      active,
-      // showIcon = false,
-      ...props
-    },
-    ref
-  ) => {
-    const url = getItemUrl(item, baseUrl);
+  ({ item, className, iconBefore, iconAfter, active, ...props }, ref) => {
+    const url = getItemUrl(item);
 
     // Xử lý external link
     const isExternal = url.startsWith("https");
@@ -45,8 +31,8 @@ const NavigationLink = forwardRef<HTMLAnchorElement, NavigationLinkProps>(
         href={url}
         ref={ref}
         className={cn(
-          "flex items-center py-2 text-sm transition-colors",
-          "text-neutral-100 hover:text-primary",
+          "flex items-center py-2 text-sm",
+          "hover:text-primary",
           active && "text-primary font-medium",
           className
         )}

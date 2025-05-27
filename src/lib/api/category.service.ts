@@ -6,7 +6,7 @@ import { Category, CategoryResponse } from "types/categories";
 export const fetchCategoryBySlug = cache(async (slug: string) => {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/site/category?type=post&domain_id=${DOMAIN_ID}?slug=${slug}`,
+      `${API_BASE_URL}/site/category?type=post&slug=${slug}&domain_id=${DOMAIN_ID}`,
       {
         next: {
           revalidate: REVALIDATE_TIMES.DYNAMIC,

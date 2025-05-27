@@ -20,7 +20,7 @@ export function MobileMenu({ items, onItemClick = () => {} }: Props) {
     <div className="md:hidden absolute top-14 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1024px]">
       <Container
         size="lg"
-        className="bg-neutral-800 dark:bg-neutral-900 bg-radial-[at_0%_100%] from-[#1e1e1e] to-transparent to-70% backdrop-blur-md rounded-xl p-4 shadow-xs shadow-neutral-900/30 fade-in"
+        className="bg-neutral-0 dark:bg-neutral-900 dark:bg-radial-[at_0%_100%] from-[#1e1e1e] to-transparent to-70% backdrop-blur-md rounded-xl p-4 shadow-xs shadow-neutral-900/30 fade-in"
       >
         <div className="flex flex-col space-y-1">
           {activeItems.map((item) => (

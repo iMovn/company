@@ -5,6 +5,7 @@ export interface MenuItem {
   is_active: number;
   type: string;
   icon: string | null;
+  description?: string;
   children: MenuItem[];
   parent_id?: number;
   sort?: number;

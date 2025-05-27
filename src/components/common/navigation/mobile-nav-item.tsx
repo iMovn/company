@@ -12,7 +12,6 @@ import { LucideIcon } from "@components/ui/LucideIcon";
 
 interface MobileNavItemProps {
   item: MenuItem;
-  baseUrl?: string;
   onClick?: () => void;
   level?: number;
 }
@@ -23,14 +22,13 @@ interface MobileNavItemProps {
 
 export function MobileNavItem({
   item,
-  baseUrl = "",
   onClick,
   level = 0,
 }: MobileNavItemProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const hasChildren = item.children && item.children.length > 0;
-  const itemUrl = getItemUrl(item, baseUrl);
+  const itemUrl = getItemUrl(item);
 
   // Kiểm tra active state
   const isActive = pathname === itemUrl || pathname.startsWith(`${itemUrl}/`);
@@ -80,10 +78,9 @@ export function MobileNavItem({
 
           <NavigationLink
             item={item}
-            baseUrl={baseUrl}
             className={cn(
               "py-2 text-base font-medium flex-1",
-              isActive && "text-primary font-semibold",
+              isActive && "text-primary font-medium",
               level > 0 && "text-sm"
             )}
             onClick={handleClick}
@@ -105,7 +102,7 @@ export function MobileNavItem({
 
       {/* Dropdown content */}
       {isOpen && hasChildren && (
-        <div className="pl-4 border-l border-neutral-800 mt-1 mb-2 space-y-1 animate-fade-in">
+        <div className="pl-2 border-l border-neutral-800 mt-1 mb-2 space-y-1 animate-fade-in">
           {item.children
             .filter((child) => child.is_active === 1)
             .sort((a, b) => (a.sort || 0) - (b.sort || 0)) // Sort theo thứ tự nếu có
@@ -113,7 +110,6 @@ export function MobileNavItem({
               <MobileNavItem
                 key={child.id}
                 item={child}
-                baseUrl={itemUrl}
                 onClick={onClick}
                 level={level + 1}
               />

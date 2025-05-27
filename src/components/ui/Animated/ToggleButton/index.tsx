@@ -189,10 +189,7 @@ export function AnimatedMenuButtonMorph({
   return (
     <Button
       variant="ghost"
-      className={cn(
-        "md:hidden ml-2 text-neutral-100 p-2 rounded-full group",
-        className
-      )}
+      className={cn("md:hidden ml-2 p-2 rounded-full group", className)}
       onClick={onClick}
       aria-label={isOpen ? "Close menu" : "Open menu"}
       aria-expanded={isOpen}

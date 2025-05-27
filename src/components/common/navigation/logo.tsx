@@ -18,7 +18,7 @@ const Logo = ({ initialLogo }: Props) => {
         prefetch={false}
         aria-label="Trang chủ"
       >
-        <div className="md:w-11 w-9.5 md:h-11 h-9.5 relative">
+        <div className="md:w-11 w-10.5 md:h-11 h-10.5 relative">
           <Image
             src={logoUrl}
             alt="iMovn Logo"

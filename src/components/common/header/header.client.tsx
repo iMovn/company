@@ -2,18 +2,18 @@
 import dynamic from "next/dynamic";
 import { Suspense, useState } from "react";
 import Link from "next/link";
-import { Search, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Logo from "../navigation/logo";
 import { MenuItem } from "types/menu";
 import { SettingsData } from "types/setting";
 import { useMobileMenu } from "lib/hooks/useMenu";
 import { Container } from "@components/ui/Containers";
-import { Button } from "@components/ui/Button";
 import ThemeToggler from "../navigation/theme-toggle";
 import AnimatedMenuButtonMorph from "@components/ui/Animated/ToggleButton";
 import GradientText from "@components/ui/GradientText";
 
 import { NavSkeleton } from "@components/ui/SkeletonSection";
+import SearchDialog from "../navigation/search-dialog";
 
 // Dynamic imports cho các components nặng
 const DesktopNav = dynamic(() => import("../navigation/desktop-nav"));
@@ -26,7 +26,6 @@ const MobileMenu = dynamic(
     ),
   }
 );
-const SearchOverlay = dynamic(() => import("../navigation/search"));
 
 type Props = {
   menu: MenuItem[]; // Main menu từ SSR để fallback và desktop nav
@@ -35,7 +34,7 @@ type Props = {
 
 export default function HeaderClient({ settings, menu }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+  //const [searchOpen, setSearchOpen] = useState(false);
 
   // Fetch mobile menu với fallback logic
   const {
@@ -46,15 +45,15 @@ export default function HeaderClient({ settings, menu }: Props) {
 
   // Toggle handlers
   const toggleMenu = () => setMenuOpen(!menuOpen);
-  const toggleSearch = () => setSearchOpen(!searchOpen);
+  //const toggleSearch = () => setSearchOpen(!searchOpen);
 
   return (
     <Container
       as="header"
       size="lg"
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
+      className="fixed md:top-10 top-4 left-1/2 -translate-x-1/2 z-50"
     >
-      <div className="bg-neutral-900/80 backdrop-blur-md rounded-full py-1.5 px-4 flex items-center justify-between">
+      <div className="dark:bg-neutral-900/60 bg-neutral-0 shadow-md backdrop-blur-md rounded-full py-1.5 px-4 flex items-center justify-between">
         {/* Logo */}
         {settings && <Logo initialLogo={settings.logo} />}
 
@@ -66,14 +65,7 @@ export default function HeaderClient({ settings, menu }: Props) {
         {/* Right Side Utilities */}
         <div className="flex items-center space-x-3">
           {/* Search Toggle */}
-          <Button
-            variant="ghost"
-            className="flex text-neutral-100 hover:text-primary transition-colors p-1 rounded-full md:[&_svg]:size-4 [&_svg]:size-4.5"
-            onClick={toggleSearch}
-            aria-label="Search"
-          >
-            <Search />
-          </Button>
+          <SearchDialog />
 
           {/* Theme Toggle */}
           <div>
@@ -90,17 +82,17 @@ export default function HeaderClient({ settings, menu }: Props) {
               <span className="absolute w-2 h-2 rounded-full bg-red-500 animate-pulse-soft"></span>
             </div>
 
-            <span className="text-neutral-100">
+            <span>
               <span>1 Slot </span>
               <br />
-              <span className="text-neutral-400">còn lại trong quý này</span>
+              <span>còn lại trong quý này</span>
             </span>
           </div>
 
           {/* CTA Button */}
           <Link
             href="/contact"
-            className="hidden md:flex items-center justify-center bg-gray-600 text-neutral-900 hover:bg-gray-700 hover:text-neutral-100 transition-colors rounded-full px-4 py-2 text-sm font-medium"
+            className="hidden md:flex items-center justify-center dark:bg-gray-600 bg-gray-800 text-neutral-900 hover:bg-gray-700 hover:text-neutral-100 transition-colors rounded-full px-4 py-2 text-sm font-medium"
           >
             <GradientText
               colors={["#40ffaa", "#4079ff", "#40ffaa"]}
@@ -163,9 +155,6 @@ export default function HeaderClient({ settings, menu }: Props) {
           )}
         </>
       )}
-
-      {/* Search Overlay */}
-      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
     </Container>
   );
 }

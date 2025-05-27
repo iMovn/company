@@ -10,23 +10,22 @@ import { LucideIcon } from "@components/ui/LucideIcon";
 
 interface NavMenuItemProps {
   item: MenuItem;
-  baseUrl?: string;
 }
 
 /**
  * Component menu item cho navbar với icon support
  */
-export function NavMenuItem({ item, baseUrl = "" }: NavMenuItemProps) {
+export function NavMenuItem({ item }: NavMenuItemProps) {
   const pathname = usePathname();
   const hasChildren = item.children && item.children.length > 0;
-  const itemUrl = getItemUrl(item, baseUrl);
+  const itemUrl = getItemUrl(item);
 
   // Kiểm tra active state
   const isActive = pathname === itemUrl || pathname.startsWith(`${itemUrl}/`);
 
   // Nếu có children, sử dụng dropdown component
   if (hasChildren) {
-    return <NavDropdownLink item={item} baseUrl={baseUrl} />;
+    return <NavDropdownLink item={item} />;
   }
 
   // Link thông thường không có dropdown nhưng có thể có icon
@@ -34,7 +33,6 @@ export function NavMenuItem({ item, baseUrl = "" }: NavMenuItemProps) {
     <NavigationMenuItem>
       <NavigationLink
         item={item}
-        baseUrl={baseUrl}
         className="px-3 py-2 text-sm font-medium flex items-center"
         active={isActive}
         iconBefore={

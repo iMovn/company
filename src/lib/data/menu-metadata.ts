@@ -53,17 +53,30 @@ export function getMenuItemDescription(item: MenuItem): string {
 }
 
 /**
- * Tạo URL đầy đủ từ menu item
+ * Tạo URL đầy đủ từ menu item domain/prarent menu/child menu
  */
-export function getItemUrl(item: MenuItem, parentUrl: string = ""): string {
+// export function getItemUrl(item: MenuItem, parentUrl: string = ""): string {
+//   // Nếu là URL tuyệt đối hoặc external
+//   if (item.link.startsWith("/") || item.link.startsWith("https")) {
+//     return item.link;
+//   }
+
+//   // Kết hợp với URL cha
+//   const baseUrl = parentUrl.endsWith("/") ? parentUrl : `${parentUrl}/`;
+//   return `${baseUrl}${item.link}`;
+// }
+
+/**
+ * Luôn trả về URL gốc của item (bỏ qua URL cha nếu có) domain/child menu
+ */
+export function getItemUrl(item: MenuItem): string {
   // Nếu là URL tuyệt đối hoặc external
-  if (item.link.startsWith("/") || item.link.startsWith("https")) {
+  if (item.link.startsWith("/") || item.link.startsWith("http")) {
     return item.link;
   }
 
-  // Kết hợp với URL cha
-  const baseUrl = parentUrl.endsWith("/") ? parentUrl : `${parentUrl}/`;
-  return `${baseUrl}${item.link}`;
+  // Luôn trả về URL gốc của item (bỏ qua parentUrl)
+  return `/${item.link}`;
 }
 
 /**
