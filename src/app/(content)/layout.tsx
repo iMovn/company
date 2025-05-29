@@ -17,7 +17,7 @@ export default function ContentLayout({
 }) {
   return (
     <>
-      <Container size="lg" className="container mx-auto px-4 py-8">
+      <Container size="lg">
         <main>{children}</main>
       </Container>
     </>

@@ -64,7 +64,7 @@ export function NavDropdownLink({ item }: NavDropdownLinkProps) {
                           "hover:bg-neutral-800 hover:text-neutral-100 focus:bg-neutral-800 focus:text-neutral-100"
                         )}
                       >
-                        <div className="text-sm font-medium leading-none  flex items-center">
+                        <div className="text-sm font-medium font-archivo leading-none  flex items-center">
                           {/* Icon cho menu con */}
                           {child.icon && (
                             <LucideIcon

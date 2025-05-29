@@ -5,6 +5,10 @@ export const CACHE_TAGS = {
   SETTINGS: "settings",
   CATEGORIES: "categories",
   CATEGORY: (id: string) => `category-${id}`,
+  POSTS: "posts",
+  POST: (slug: string) => `post-${slug}`,
+  SIDEBAR: "sidebar",
+  RECENT_POSTS: "recent-posts",
 } as const;
 
 export const REVALIDATE_TIMES = {

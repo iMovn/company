@@ -33,7 +33,7 @@ export function NavMenuItem({ item }: NavMenuItemProps) {
     <NavigationMenuItem>
       <NavigationLink
         item={item}
-        className="px-3 py-2 text-sm font-medium flex items-center"
+        className="px-3 py-2 text-sm font-archivo font-medium flex items-center"
         active={isActive}
         iconBefore={
           item.icon ? (

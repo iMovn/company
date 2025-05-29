@@ -78,7 +78,6 @@
   --box-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --box-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 
-  --font-poppins: "Poppins", sans-serif;
   --font-archivo: "Archivo", sans-serif;
   --font-mulish: "Mulish", sans-serif;
 }
@@ -102,5 +101,5 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
 
-  --default-font-family: var(--font-poppins);
+  --default-font-family: var(--font-mulish);
 }

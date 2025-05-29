@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@components/ui/SearchDialog";
+} from "@components/ui/Dialog";
 
 const SearchDialog = () => {
   const [isOpen, setIsOpen] = useState(false);

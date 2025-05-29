@@ -2,11 +2,13 @@ import CategoryPage from "@modules/content/CategoryPage";
 import PostDetail from "@modules/content/PostDetail";
 import { fetchCategoryBySlug } from "lib/api/category.service";
 import { fetchPostBySlug } from "lib/api/post.service";
+import { fetchSidebarData } from "lib/api/sidebar.service";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -48,28 +50,41 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ContentPage({ params }: Props) {
+export default async function ContentPage({ params, searchParams }: Props) {
   // Get all resolved parameters at once
   const resolvedParams = await params;
-  // Sử dụng Promise.all để fetch song song cả post và category
-  const [post, category] = await Promise.all([
+  const resolvedSearchParams = await searchParams;
+
+  // Extract pagination parameters
+  const page = resolvedSearchParams.page
+    ? parseInt(resolvedSearchParams.page as string)
+    : 1;
+  const limit = resolvedSearchParams.limit
+    ? parseInt(resolvedSearchParams.limit as string)
+    : 9;
+  const sort_name = (resolvedSearchParams.sort_name as string) || "id";
+  const sort_by = (resolvedSearchParams.sort_by as "asc" | "desc") || "desc";
+
+  // Category query options
+  const categoryOptions = {
+    page,
+    limit,
+    sort_name,
+    sort_by,
+  };
+
+  // Sử dụng Promise.all để fetch song song cả post, category và sidebar data
+  const [post, category, sidebarData] = await Promise.all([
     fetchPostBySlug(resolvedParams.slug),
-    fetchCategoryBySlug(resolvedParams.slug),
+    fetchCategoryBySlug(resolvedParams.slug, categoryOptions),
+    fetchSidebarData(5),
   ]);
   if (post) {
-    return (
-      <div className="container py-8">
-        <PostDetail post={post} />
-      </div>
-    );
+    return <PostDetail post={post} />;
   }
 
   if (category) {
-    return (
-      <div className="container py-8">
-        <CategoryPage category={category} />
-      </div>
-    );
+    return <CategoryPage category={category} sidebarData={sidebarData} />;
   }
 
   // Nếu không tìm thấy cả hai

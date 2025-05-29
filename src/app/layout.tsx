@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins, Archivo, Mulish } from "next/font/google";
+import { Archivo, Mulish } from "next/font/google";
 import "./../styles/globals.css";
 import ScrollToTop from "@components/common/scroll-to-top";
 import { cn } from "lib/utils/utils";
@@ -8,14 +8,6 @@ import { ThemeProvider } from "./providers/theme";
 import { InitIcons } from "@components/ui/LucideIcon";
 import { ToastProvider } from "./providers/toast";
 import Footer from "@components/common/footer/page";
-
-const poppinSans = Poppins({
-  variable: "--font-poppin-sans",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  preload: true, // Critical font
-});
 
 const archivoSans = Archivo({
   variable: "--font-archivo-sans",
@@ -28,7 +20,7 @@ const mulishSans = Mulish({
   variable: "--font-mulish-sans",
   subsets: ["latin"],
   display: "swap",
-  preload: false,
+  preload: true,
 });
 
 // Viewport configuration for better mobile experience
@@ -53,16 +45,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html
       lang="vi"
       suppressHydrationWarning
-      className={cn(
-        poppinSans.variable,
-        archivoSans.variable,
-        mulishSans.variable
-      )}
+      className={cn(archivoSans.variable, mulishSans.variable)}
     >
       <body
         className={cn(
-          "bg-background font-poppins antialiased",
-          "selection:bg-primary/20 selection:text-primary-foreground",
+          "font-mulish antialiased",
+          "selection:bg-primary/80 selection:text-neutral-50",
           "overflow-x-hidden"
         )}
       >
