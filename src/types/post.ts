@@ -13,6 +13,7 @@ export interface Post {
   meta_title: string | null;
   meta_description: string | null;
   canonical: string | null;
+  toc?: string;
   categories: {
     id: number;
     name: string;

@@ -121,7 +121,7 @@ export default function CategoryPage({
         <Container
           size="md"
           as={DialogContent}
-          className="max-h-[80vh] overflow-y-auto bg-neutral-0 dark:bg-neutral-950"
+          className="max-h-[80vh] overflow-y-auto bg-neutral-50 dark:bg-neutral-900"
         >
           <DialogHeader className="sr-only">
             <DialogTitle>{details.name}</DialogTitle>

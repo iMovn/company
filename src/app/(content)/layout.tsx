@@ -17,7 +17,7 @@ export default function ContentLayout({
 }) {
   return (
     <>
-      <Container size="lg">
+      <Container size="lg" className="dynamic-content">
         <main>{children}</main>
       </Container>
     </>

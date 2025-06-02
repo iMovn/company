@@ -89,7 +89,7 @@ export default function Pagination({
   return (
     <div className="pagination-wrapper mt-8">
       {/* Thông tin trang */}
-      <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
+      <div className="flex items-center justify-between mb-4 text-sm dark:text-gray-300 text-gray-600">
         <div className="font-archivo">
           Hiển thị <strong>{from}</strong> đến <strong>{to}</strong> của{" "}
           <strong>{total}</strong> bài viết

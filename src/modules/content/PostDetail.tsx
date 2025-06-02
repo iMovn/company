@@ -7,8 +7,14 @@ import "@styles/components/post.scss";
 import { ArrowRight, Crown } from "lucide-react";
 import { formatDateVi } from "lib/utils/format";
 import { Button } from "@components/ui/Button";
+import { insertTocToContent } from "lib/utils/insertToc";
 
 export default function PostDetail({ post }: { post: Post }) {
+  // Kiểm tra nếu post.content và post.toc tồn tại trước khi sử dụng
+  const processedContent = post.content
+    ? insertTocToContent(post.content, post.toc || "")
+    : "";
+
   // Lấy danh mục chính của bài viết
   const mainCategory = post.categories?.[0];
   // Lấy tất cả bài viết liên quan
@@ -64,12 +70,12 @@ export default function PostDetail({ post }: { post: Post }) {
         </section>
 
         {/* Post Content */}
-        <Container size="md">
-          <div className="dark:bg-neutral-200 bg-neutral-0 shadow-md rounded-lg p-6">
-            {post.content && (
+        <Container size="md" className="content-detail">
+          <div className="dark:bg-neutral-200 bg-neutral-0 shadow-md rounded-lg md:p-6 px-4 py-6">
+            {processedContent && (
               <div
                 className="entry-content prose prose-gray max-w-none text-justify text-neutral-950"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: processedContent }}
               />
             )}
           </div>

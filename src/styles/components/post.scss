@@ -1,15 +1,47 @@
+// src/styles/components/post.scss
 .entry-content {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 12px;
+  }
   h2 {
-    font-size: 23px;
+    font-size: 19px;
     text-align: start;
+    font-weight: 600;
+  }
+
+  h2 strong {
+    border-bottom: 3px double #53b7c3a6;
   }
 
   h3 {
-    font-size: 19px;
+    font-size: 17px;
     text-align: start;
+    font-weight: 500;
   }
 
   p {
-    margin: 12px 0;
+    margin-bottom: 12px;
+  }
+
+  ol,
+  ul {
+    list-style: auto;
+    margin-left: 15px;
+    margin-bottom: 12px;
+  }
+}
+
+.toc-wrapper {
+  .toc-content {
+    ul li {
+      margin-bottom: 5px;
+    }
+    ul li a:hover {
+      color: var(--color-primary-500);
+    }
   }
 }

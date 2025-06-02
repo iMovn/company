@@ -1,0 +1,14 @@
+/* Custom positioning for mobile */
+@media (max-width: 768px) {
+  .dynamic-content {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .header-layout-category {
+    padding: 0px 23px;
+  }
+  .content-detail {
+    padding: 0px;
+  }
+}
