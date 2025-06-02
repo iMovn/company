@@ -8,6 +8,7 @@ import { formatDateVi } from "lib/utils/format";
 import { Calendar, TrendingUp } from "lucide-react";
 import { Button } from "@components/ui/Button";
 import { PostItem } from "types/all-posts";
+import SpotlightCard from "@components/ui/SpotlightCard";
 
 interface CategorySidebarProps {
   categories: Category[];
@@ -29,12 +30,34 @@ export default function CategorySidebar({
 
   return (
     <div className="sidebar-content space-y-6">
+      {/* Banner hoặc CTA (optional) */}
+      <SpotlightCard
+        className="custom-spotlight-card"
+        spotlightColor="rgba(0, 229, 255, 0.3)"
+      >
+        <div className="bg-gradient-to-br from-primary-100 to-indigo-100 rounded-lg p-3 text-center">
+          <h5 className="font-semibold text-neutral-950 mb-2 capitalize">
+            Nâng tầm thương hiệu
+          </h5>
+          <p className="text-sm text-gray-600 mb-3">
+            Biến tầm nhìn thành hiện thực – iMovn đồng hành cùng doanh nghiệp
+            bạn chinh phục bầu trời số
+          </p>
+          <Button
+            asChild
+            className="w-full bg-primary hover:bg-primary/73 text-white text-sm font-medium py-2 px-4 rounded-md transition-colors duration-200"
+          >
+            <Link href="/services">Dịch vụ tại iMovn</Link>
+          </Button>
+        </div>
+      </SpotlightCard>
+
       {/* Danh mục cha */}
       <div className="sidebar-section">
-        <h3 className="flex items-center text-lg font-semibold mb-4 text-gray-800">
+        <h5 className="flex items-center text-lg font-semibold mb-4 capitalize">
           <TrendingUp className="w-5 h-5 mr-2 text-primary" />
-          Danh mục
-        </h3>
+          Chuyên mục số
+        </h5>
         <nav className="space-y-2">
           {parentCategories.map((category) => {
             const isActive =
@@ -45,10 +68,8 @@ export default function CategorySidebar({
               <Link
                 key={category.id}
                 href={`/${category.slug}`}
-                className={`block px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  isActive
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+                className={`block py-2 rounded-md text-sm font-medium ${
+                  isActive ? "text-primary" : ""
                 }`}
               >
                 {category.name}
@@ -60,7 +81,7 @@ export default function CategorySidebar({
 
       {/* Bài viết mới nhất */}
       <div className="sidebar-section">
-        <h3 className="flex items-center text-lg font-semibold mb-4 text-gray-800">
+        <h3 className="flex items-center text-lg font-semibold mb-4 capitalize">
           <Calendar className="w-5 h-5 mr-2 text-primary" />
           Bài viết mới nhất
         </h3>
@@ -85,7 +106,7 @@ export default function CategorySidebar({
 
                   {/* Nội dung */}
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
+                    <h4 className="text-sm font-medium line-clamp-2 group-hover:text-primary">
                       {post.name}
                     </h4>
                     <div className="flex items-center text-xs text-gray-500 mt-2">
@@ -96,21 +117,6 @@ export default function CategorySidebar({
               </Link>
             </article>
           ))}
-        </div>
-      </div>
-
-      {/* Banner hoặc CTA (optional) */}
-      <div className="sidebar-section">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg p-4 text-center">
-          <h4 className="font-semibold text-gray-800 mb-2">
-            Nhận thông tin mới nhất
-          </h4>
-          <p className="text-sm text-gray-600 mb-3">
-            Đăng ký để nhận bài viết marketing mới nhất
-          </p>
-          <Button className="w-full bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200">
-            Đăng ký ngay
-          </Button>
         </div>
       </div>
     </div>

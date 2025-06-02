@@ -12,7 +12,7 @@ export default function PostCard({ post }: PostCardProps) {
     <article className="box-item flex flex-col-reverse md:flex-row mb-4 p-4 border rounded-lg overflow-hidden hover:text-primary dark:hover:text-neutral-1000 hover:shadow-md dark:bg-neutral-950 bg-neutral-0 hover:dark:bg-neutral-300 transition-shadow">
       <div className="box-text flex-1 md:order-first pr-4">
         <Link href={`/${post.slug}`}>
-          <h3 className="font-medium line-clamp-2 my-2 md:my-0">{post.name}</h3>
+          <h3 className="font-bold line-clamp-2 my-2 md:my-0">{post.name}</h3>
           <div
             className="text-sm text-gray-600 dark:text-gray-500 line-clamp-3 mb-3"
             dangerouslySetInnerHTML={{ __html: post.description }}

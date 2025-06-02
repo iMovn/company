@@ -8,6 +8,7 @@ import { ThemeProvider } from "./providers/theme";
 import { InitIcons } from "@components/ui/LucideIcon";
 import { ToastProvider } from "./providers/toast";
 import Footer from "@components/common/footer/page";
+import { GradientBackground } from "@components/ui/GradientBackground";
 
 const archivoSans = Archivo({
   variable: "--font-archivo-sans",
@@ -56,13 +57,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <ThemeProvider>
           <ToastProvider>
-            <InitIcons />
-            <HeaderServer />
-            <div className="relative flex flex-col min-h-screen">
-              {children}
-            </div>
-            <ScrollToTop />
-            <Footer />
+            <GradientBackground>
+              <InitIcons />
+              <HeaderServer />
+              <div className="relative flex flex-col min-h-screen">
+                {children}
+              </div>
+              <ScrollToTop />
+              <Footer />
+            </GradientBackground>
           </ToastProvider>
         </ThemeProvider>
       </body>
