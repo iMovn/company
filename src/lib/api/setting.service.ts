@@ -1,32 +1,116 @@
+// lib/api/setting.service.ts
 import { REVALIDATE_TIMES } from "lib/constants/cache-tags";
 import { API_BASE_URL, DOMAIN_ID } from "lib/constants/global";
 import { cache } from "react";
 import type { SettingResponse, SettingsData } from "types/setting";
 
-// Tách hàm fetch nguyên bản
-const fetchSettingsData = async (): Promise<SettingsData> => {
-  const response = await fetch(
-    `${API_BASE_URL}/site/settings?domain_id=${DOMAIN_ID}`,
-    {
-      next: {
-        revalidate: REVALIDATE_TIMES.DYNAMIC,
-        tags: ["site-settings"],
-      },
-    }
-  );
-
-  if (!response.ok) {
-    console.error(
-      "Lỗi gọi API Settings:",
-      response.status,
-      response.statusText
+export const fetchSettings = cache(async (): Promise<SettingsData> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/site/settings?domain_id=${DOMAIN_ID}`,
+      {
+        next: {
+          revalidate: REVALIDATE_TIMES.DYNAMIC,
+          tags: ["site-settings"],
+        },
+      }
     );
-    throw new Error(`API error: ${response.status}`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch settings: ${response.status}`);
+    }
+
+    const result: SettingResponse = await response.json();
+
+    if (!result.data) {
+      throw new Error("Invalid settings data structure");
+    }
+
+    // Transform data to match your Typescript interface
+    return {
+      seo: {
+        meta_title: result.data.seo?.meta_title || "",
+        canonical: result.data.seo?.canonical || "",
+        meta_author: result.data.seo?.meta_author || "",
+        meta_description: result.data.seo?.meta_description || "",
+        meta_og_title: result.data.seo?.meta_og_title || "",
+        meta_og_description: result.data.seo?.meta_og_description || "",
+        meta_og_type: result.data.seo?.meta_og_type || "website",
+        meta_og_locale: result.data.seo?.meta_og_locale || "vi_VN",
+        meta_og_url: result.data.seo?.meta_og_url || "",
+        meta_og_site_name: result.data.seo?.meta_og_site_name || "",
+        meta_og_image: result.data.seo?.meta_og_image || "",
+        meta_og_image_alt: result.data.seo?.meta_og_image_alt || "",
+        google_analytics: result.data.seo?.google_analytics || "",
+        google_ads: result.data.seo?.google_ads || "",
+        google_search_console: result.data.seo?.google_search_console || "",
+        schema: result.data.seo?.schema || "",
+        // Add any missing fields from your interface
+      },
+      content: {
+        content: result.data.content?.content || "",
+      },
+      company: {
+        name: result.data.company?.name || "",
+        phone: result.data.company?.phone || "",
+        email: result.data.company?.email || "",
+        hotline: result.data.company?.hotline || "",
+        address: result.data.company?.address || "",
+        copyright: result.data.company?.copyright || "",
+        description: result.data.company?.description || "",
+        fanpage: result.data.company?.fanpage || "",
+        website: result.data.company?.website || "",
+        link_map: result.data.company?.link_map || "",
+        link_google_business: result.data.company?.link_google_business || "",
+        map: result.data.company?.map || "",
+      },
+      logo: result.data.logo || "",
+      favicon: result.data.favicon || "",
+      home_avatar: result.data.home_avatar || "",
+    };
+  } catch (error) {
+    console.error("Error fetching settings:", error);
+
+    // Return default empty values if error occurs
+    return {
+      seo: {
+        meta_title: "",
+        canonical: "",
+        meta_author: "",
+        meta_description: "",
+        meta_og_title: "",
+        meta_og_description: "",
+        meta_og_type: "website",
+        meta_og_locale: "vi_VN",
+        meta_og_url: "",
+        meta_og_site_name: "",
+        meta_og_image: "",
+        meta_og_image_alt: "",
+        google_analytics: "",
+        google_ads: "",
+        google_search_console: "",
+        schema: "",
+      },
+      content: {
+        content: "",
+      },
+      company: {
+        name: "",
+        phone: "",
+        email: "",
+        hotline: "",
+        address: "",
+        copyright: "",
+        description: "",
+        fanpage: "",
+        website: "",
+        link_map: "",
+        link_google_business: "",
+        map: "",
+      },
+      logo: "",
+      favicon: "",
+      home_avatar: "",
+    };
   }
-
-  const result: SettingResponse = await response.json();
-  return result.data || [];
-};
-
-// Áp dụng cache ở mức cao nhất
-export const fetchSettings = cache(fetchSettingsData);
+});

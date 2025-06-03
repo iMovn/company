@@ -2,44 +2,11 @@
 @import "tw-animate-css";
 
 /* Custom variant for dark mode */
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "./theme/index.css";
 @import "./utilities/animate.css";
-
-/* Start Custom toast styles */
-.toast-custom {
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  backdrop-filter: blur(8px);
-}
-
-/* Dark mode adjustments */
-.dark .toast-custom {
-  background: rgba(15, 23, 42, 0.95) !important;
-  border-color: rgba(51, 65, 85, 0.8) !important;
-}
-
-/* Light mode adjustments */
-.light .toast-custom {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border-color: rgba(229, 231, 235, 0.8) !important;
-}
-
-/* Animation improvements */
-[data-sonner-toaster] [data-sonner-toast] {
-  transform: translateX(var(--x)) translateY(var(--y)) scale(var(--scale));
-  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-}
-
-/* Custom positioning for mobile */
-@media (max-width: 640px) {
-  [data-sonner-toaster] {
-    left: 0.5rem !important;
-    right: 0.5rem !important;
-    width: calc(100% - 1rem) !important;
-  }
-}
-/* End Custom toast styles */
 
 /* ============ BASE STYLES ============ */
 @layer base {
@@ -89,5 +56,19 @@
 
 /* ============ COMPONENT STYLES ============ */
 @layer components {
-  /* Custom component styles here */
+  /* Custom MODE component styles here */
+  .content-footer h2 {
+    font-size: var(--font-size-5xl);
+    line-height: var(--font-size-5xl-line-height);
+    font-family: var(--font-archivo);
+    margin-bottom: 12px;
+  }
+
+  /* Custom DARK component styles here */
+  @variant dark {
+    .content-footer p,
+    .form-group p {
+      color: var(--color-neutral-300);
+    }
+  }
 }

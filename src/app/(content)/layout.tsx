@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@styles/components/post.scss";
 import { Container } from "@components/ui/Containers";
 
 export const metadata: Metadata = {

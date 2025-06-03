@@ -32,10 +32,10 @@ export default function CategorySidebar({
     <div className="sidebar-content space-y-6">
       {/* Banner hoặc CTA (optional) */}
       <SpotlightCard
-        className="custom-spotlight-card"
+        className="rounded-lg"
         spotlightColor="rgba(0, 229, 255, 0.3)"
       >
-        <div className="bg-gradient-to-br from-primary-100 to-indigo-100 rounded-lg p-3 text-center">
+        <div className="bg-gradient-to-br from-primary-100 to-indigo-100 p-3 text-center">
           <h5 className="font-semibold text-neutral-950 mb-2 capitalize">
             Nâng tầm thương hiệu
           </h5>

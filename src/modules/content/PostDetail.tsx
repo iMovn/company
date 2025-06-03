@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Post } from "types/post";
 import Breadcrumb from "@components/common/breadcrumb";
 import { Container } from "@components/ui/Containers";
-import "@styles/components/post.scss";
 import { ArrowRight, Crown } from "lucide-react";
 import { formatDateVi } from "lib/utils/format";
 import { Button } from "@components/ui/Button";

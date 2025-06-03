@@ -51,7 +51,7 @@ export default function HeaderClient({ settings, menu }: Props) {
     <Container
       as="header"
       size="lg"
-      className="fixed md:top-10 top-4 left-1/2 -translate-x-1/2 z-50"
+      className="absolute md:top-10 top-4 left-1/2 -translate-x-1/2 z-50"
     >
       <div className="dark:bg-neutral-900/60 bg-neutral-0 shadow-md backdrop-blur-md rounded-full py-1.5 px-4 flex items-center justify-between">
         {/* Logo */}

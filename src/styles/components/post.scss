@@ -1,4 +1,5 @@
 // src/styles/components/post.scss
+@import "../theme/core.css";
 .entry-content {
   h2,
   h3,
@@ -32,6 +33,12 @@
     list-style: auto;
     margin-left: 15px;
     margin-bottom: 12px;
+  }
+
+  img {
+    box-shadow: var(--box-shadow-sm);
+    border-radius: var(--border-radius-md);
+    margin-top: 12px;
   }
 }
 
