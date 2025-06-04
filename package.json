@@ -8,6 +8,15 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11",
+    "not chrome < 60",
+    "not firefox < 60",
+    "not safari < 12"
+  ],
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-dialog": "^1.1.14",
