@@ -62,7 +62,7 @@ export default function PostDetail({ post }: { post: Post }) {
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover select-none"
-                loading="lazy"
+                priority
               />
             </div>
           )}
@@ -123,7 +123,7 @@ export default function PostDetail({ post }: { post: Post }) {
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
                           className="object-cover select-none hover:scale-105 transition-transform duration-300 rounded-md"
-                          loading="lazy"
+                          priority
                         />
                       </Link>
                     )}

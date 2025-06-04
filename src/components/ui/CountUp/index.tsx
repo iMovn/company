@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useInView, useMotionValue, useSpring } from "framer-motion";
 
 interface CountUpProps {
@@ -11,6 +11,8 @@ interface CountUpProps {
   className?: string;
   startWhen?: boolean;
   separator?: string;
+  prefix?: string; // Added prefix support
+  suffix?: string; // Added suffix support
   onStart?: () => void;
   onEnd?: () => void;
 }
@@ -24,6 +26,8 @@ export default function CountUp({
   className = "",
   startWhen = true,
   separator = "",
+  prefix = "", // Default empty prefix
+  suffix = "", // Default empty suffix
   onStart,
   onEnd,
 }: CountUpProps) {
@@ -41,12 +45,34 @@ export default function CountUp({
 
   const isInView = useInView(ref, { once: true, margin: "0px" });
 
+  // Format number with prefix and suffix
+  const formatNumber = useCallback(
+    (value: number) => {
+      const options = {
+        useGrouping: !!separator,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      };
+
+      const formattedNumber = Intl.NumberFormat("en-US", options).format(
+        Number(value.toFixed(0))
+      );
+
+      const separatedNumber = separator
+        ? formattedNumber.replace(/,/g, separator)
+        : formattedNumber;
+
+      return `${prefix}${separatedNumber}${suffix}`;
+    },
+    [separator, prefix, suffix]
+  );
+
   // Set initial text content to the initial value based on direction
   useEffect(() => {
     if (ref.current) {
-      ref.current.textContent = String(direction === "down" ? to : from);
+      ref.current.textContent = formatNumber(direction === "down" ? to : from);
     }
-  }, [from, to, direction]);
+  }, [from, to, direction, formatNumber]);
 
   // Start the animation when in view and startWhen is true
   useEffect(() => {
@@ -87,24 +113,12 @@ export default function CountUp({
   useEffect(() => {
     const unsubscribe = springValue.on("change", (latest) => {
       if (ref.current) {
-        const options = {
-          useGrouping: !!separator,
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        };
-
-        const formattedNumber = Intl.NumberFormat("en-US", options).format(
-          Number(latest.toFixed(0))
-        );
-
-        ref.current.textContent = separator
-          ? formattedNumber.replace(/,/g, separator)
-          : formattedNumber;
+        ref.current.textContent = formatNumber(latest);
       }
     });
 
     return () => unsubscribe();
-  }, [springValue, separator]);
+  }, [springValue, formatNumber]);
 
   return <span className={`${className}`} ref={ref} />;
 }

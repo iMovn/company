@@ -1,6 +1,15 @@
 export function insertTocToContent(content: string, toc: string): string {
   if (!content || !toc) return content || "";
 
+  // Check if content has any heading tags (h1-h6)
+  const hasHeadings =
+    /<h[1-6](?![^>]*class="toc-heading")[^>]*>.*?<\/h[1-6]>/i.test(content);
+
+  // If no headings found, return original content without TOC
+  if (!hasHeadings) {
+    return content;
+  }
+
   // SVG Crown icon
   const crownIcon = `
     <svg 
@@ -18,6 +27,17 @@ export function insertTocToContent(content: string, toc: string): string {
     </svg>
   `;
 
+  // Create TOC HTML structure
+  const tocHtml = `
+    <div class="toc-wrapper my-8 p-4 bg-neutral-50 dark:bg-neutral-300 rounded-lg shadow-md">
+      <div class="toc-header flex items-center mb-1 gap-1">
+        ${crownIcon}
+        <h5 class="text-lg font-bold text-gray-800 !mb-0">Mục lục bài viết</h5>
+      </div>
+      <div class="toc-content">${toc}</div>
+    </div>
+  `;
+
   // Tìm vị trí chèn TOC (trước heading đầu tiên hoặc sau đoạn đầu tiên)
   const firstHeadingRegex = /<(h[1-6])(?![^>]*class="toc-heading")[^>]*>/i;
   const firstParagraphRegex = /<p[^>]*>.*?<\/p>/i;
@@ -28,13 +48,7 @@ export function insertTocToContent(content: string, toc: string): string {
     const endIndex = paragraphMatch.index! + paragraphMatch[0].length;
     return `
       ${content.slice(0, endIndex)}
-      <div class="toc-wrapper my-8 p-4 bg-neutral-50 dark:bg-neutral-300 rounded-lg shadow-md">
-        <div class="toc-header flex items-center mb-1 gap-1">
-          ${crownIcon}
-          <h5 class="text-lg font-bold text-gray-800 !mb-0">Mục lục bài viết</h5>
-        </div>
-        <div class="toc-content">${toc}</div>
-      </div>
+      ${tocHtml}
       ${content.slice(endIndex)}
     `;
   }
@@ -45,16 +59,10 @@ export function insertTocToContent(content: string, toc: string): string {
     const index = headingMatch.index!;
     return `
       ${content.slice(0, index)}
-      <div class="toc-wrapper my-8 p-4 bg-neutral-50 dark:bg-neutral-300 rounded-lg shadow-md">
-        <div class="toc-header flex mb-1">
-          ${crownIcon}
-          <h5 class="text-lg font-bold text-gray-800">Mục lục bài viết</h5>
-        </div>
-        <div class="toc-content">${toc}</div>
-      </div>
+      ${tocHtml}
       ${content.slice(index)}
     `;
   }
-
+  // If no suitable position found, return original content
   return content;
 }

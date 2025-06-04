@@ -83,9 +83,9 @@ export default function HeaderClient({ settings, menu }: Props) {
             </div>
 
             <span>
-              <span>1 Slot </span>
+              <span>01 Slot </span>
               <br />
-              <span>còn lại trong quý này</span>
+              <span>còn lại trong quý tới</span>
             </span>
           </div>
 

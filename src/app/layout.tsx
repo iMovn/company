@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Mulish } from "next/font/google";
 import "./../styles/globals.css";
+import NextTopLoader from "nextjs-toploader";
 import ScrollToTop from "@components/common/scroll-to-top";
 import { cn } from "lib/utils/utils";
 import HeaderServer from "@components/common/header/header.server";
@@ -54,6 +55,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           "overflow-x-hidden"
         )}
       >
+        <NextTopLoader
+          color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
+          height={1.5}
+        />
         <ThemeProvider>
           <GradientBackground>
             <InitIcons />

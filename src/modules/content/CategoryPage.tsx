@@ -58,7 +58,7 @@ export default function CategoryPage({
 
       {/* Posts List */}
       <div className="flex flex-col-reverse md:flex-row gap-6 mb-8">
-        <aside className="aside-layout-category md:w-[25%] w-full">
+        <aside className="aside-layout-category md:w-[30%] w-full">
           <div className="md:sticky top-8">
             {sidebarData ? (
               <CategorySidebar
@@ -75,7 +75,7 @@ export default function CategoryPage({
           </div>
         </aside>
         {/* Main Content */}
-        <div className="right-layout-category md:w-[75%] w-full space-y-6">
+        <div className="right-layout-category md:w-[70%] w-full space-y-6">
           {items?.data && items.data.length > 0 ? (
             <div className="">
               {items.data.map((post) => (

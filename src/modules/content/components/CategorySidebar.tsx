@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Category } from "types/categories";
 import { formatDateVi } from "lib/utils/format";
-import { Calendar, TrendingUp } from "lucide-react";
+import { ArrowUpRight, Calendar, TrendingUp } from "lucide-react";
 import { Button } from "@components/ui/Button";
 import { PostItem } from "types/all-posts";
 import SpotlightCard from "@components/ui/SpotlightCard";
@@ -29,25 +29,28 @@ export default function CategorySidebar({
   );
 
   return (
-    <div className="sidebar-content space-y-6">
+    <div className="sidebar-content space-y-6 md:border-r-[1px] border-neutral-200 dark:border-neutral-800/70 md:pr-5 md:mt-0 mt-9">
       {/* Banner hoặc CTA (optional) */}
       <SpotlightCard
         className="rounded-lg"
         spotlightColor="rgba(0, 229, 255, 0.3)"
       >
-        <div className="bg-gradient-to-br from-primary-100 to-indigo-100 p-3 text-center">
-          <h5 className="font-semibold text-neutral-950 mb-2 capitalize">
+        <div className="bg-gradient-to-br from-primary-100 to-indigo-100 md:px-3 px-4 md:py-6 py-9 text-center">
+          <h5 className="font-extrabold text-neutral-950 mb-2 uppercase">
             Nâng tầm thương hiệu
           </h5>
-          <p className="text-sm text-gray-600 mb-3">
-            Biến tầm nhìn thành hiện thực – iMovn đồng hành cùng doanh nghiệp
-            bạn chinh phục bầu trời số
+          <p className="text-base text-neutral-900 mb-3">
+            Biến tầm nhìn của bạn thành hiện thực – Chúng tôi đồng hành cùng
+            doanh nghiệp bạn chinh phục bầu trời số!
           </p>
           <Button
             asChild
-            className="w-full bg-primary hover:bg-primary/73 text-white text-sm font-medium py-2 px-4 rounded-md transition-colors duration-200"
+            className="group bg-primary hover:bg-primary/73 text-white text-sm py-2 px-4 mt-2 gap-1 rounded-xl transition-colors duration-200"
           >
-            <Link href="/services">Dịch vụ tại iMovn</Link>
+            <Link href="/services">
+              <span>Dịch vụ tại iMovn</span>
+              <ArrowUpRight className="group-hover:text-neutral-800" />
+            </Link>
           </Button>
         </div>
       </SpotlightCard>
@@ -68,7 +71,7 @@ export default function CategorySidebar({
               <Link
                 key={category.id}
                 href={`/${category.slug}`}
-                className={`block py-2 rounded-md text-sm font-medium ${
+                className={`block py-1 rounded-md text-base font-normal hover:text-primary ${
                   isActive ? "text-primary" : ""
                 }`}
               >
@@ -99,7 +102,7 @@ export default function CategorySidebar({
                         fill
                         sizes="64px"
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
+                        priority
                       />
                     </div>
                   )}

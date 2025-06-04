@@ -36,7 +36,7 @@ export default function PostCard({ post }: PostCardProps) {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
             className="object-cover select-none hover:scale-105 transition-transform duration-300 rounded-md"
-            loading="lazy"
+            priority
           />
         </Link>
       )}

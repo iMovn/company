@@ -114,17 +114,26 @@ export function ContactForm({
         <div className="grid grid-cols-1 gap-4 space-y-2">
           {/* Name Field */}
           <div className="space-y-1">
-            <label htmlFor="name" className="text-base font-semibold">
-              Tên của bạn
+            <label
+              htmlFor="nameId"
+              className="block mb-1 text-base font-semibold"
+            >
+              Tên của bạn{" "}
+              <span className="text-red-400" aria-label="bắt buộc">
+                *
+              </span>
             </label>
             <Input
               {...register("name")}
-              placeholder="Nhập tên của bạn *"
+              id="nameId"
+              type="text"
+              placeholder="Nhập tên của bạn"
               className={`transition-colors ${
                 isFieldInvalid("name")
                   ? "border-red-500 focus:border-red-500 focus:ring-red-200"
                   : "focus:border-blue-500 focus:ring-blue-200"
               }`}
+              autoComplete="name"
             />
             {getFieldError("name") && (
               <p className="text-xs dark:text-red-400 text-red-500 flex items-center">
@@ -136,18 +145,26 @@ export function ContactForm({
 
           {/* Email Field */}
           <div className="space-y-1">
-            <label htmlFor="email" className="text-base font-semibold">
-              Địa chỉ Email
+            <label
+              htmlFor="emailId"
+              className="block mb-1 text-base font-semibold"
+            >
+              Địa chỉ Email{" "}
+              <span className="text-red-400" aria-label="bắt buộc">
+                *
+              </span>
             </label>
             <Input
               {...register("email")}
+              id="emailId"
               type="email"
-              placeholder="Nhập địa chỉ email *"
+              placeholder="Nhập địa chỉ email"
               className={`transition-colors ${
                 isFieldInvalid("email")
                   ? "border-red-500 focus:border-red-500 focus:ring-red-200"
                   : "focus:border-blue-500 focus:ring-blue-200"
               }`}
+              autoComplete="email"
             />
             {getFieldError("email") && (
               <p className="text-xs dark:text-red-400 text-red-500 flex items-center">
@@ -160,18 +177,26 @@ export function ContactForm({
 
         {/* Phone Field */}
         <div className="space-y-1">
-          <label htmlFor="phone" className="text-base font-semibold">
-            Số điện thoại
+          <label
+            htmlFor="phoneId"
+            className="block mb-1 text-base font-semibold"
+          >
+            Số điện thoại{" "}
+            <span className="text-red-400" aria-label="bắt buộc">
+              *
+            </span>
           </label>
           <Input
             {...register("phone")}
+            id="phoneId"
             type="tel"
-            placeholder="Số điện thoại * (VD: 0912345678)"
+            placeholder="Số điện thoại (VD: 0912345678)"
             className={`transition-colors ${
               isFieldInvalid("phone")
                 ? "border-red-500 focus:border-red-500 focus:ring-red-200"
                 : "focus:border-blue-500 focus:ring-blue-200"
             }`}
+            autoComplete="phone"
           />
           {getFieldError("phone") && (
             <p className="text-xs dark:text-red-400 text-red-500 flex items-center">
@@ -183,11 +208,18 @@ export function ContactForm({
 
         {/* Message Field */}
         <div className="space-y-1">
-          <label htmlFor="phone" className="text-base font-semibold">
-            Nội dung tin
+          <label
+            htmlFor="messageId"
+            className="block mb-1 text-base font-semibold"
+          >
+            Nội dung tin{" "}
+            <span className="text-red-400" aria-label="bắt buộc">
+              *
+            </span>
           </label>
           <Textarea
             {...register("message")}
+            id="messageId"
             placeholder="Hãy cho chúng tôi biết về dự án của bạn"
             rows={4}
             className={`transition-colors ${
@@ -223,8 +255,11 @@ export function ContactForm({
         {/* Form Info */}
         <div className="space-y-2">
           <p className="text-xs text-gray-500">
-            Các trường có dấu <span className="text-red-500">*</span> là bắt
-            buộc
+            Các trường có dấu{" "}
+            <span className="text-red-500" aria-label="bắt buộc">
+              *
+            </span>{" "}
+            là bắt buộc
           </p>
           <p className="text-xs text-gray-400">
             Bằng cách gửi form này, bạn đồng ý để chúng tôi liên hệ tư vấn.

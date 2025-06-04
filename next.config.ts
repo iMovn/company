@@ -15,15 +15,27 @@ const nextConfig: NextConfig = {
 
   // Cấu hình images từ domain ngoài
   images: {
+    // Modern formats for better compression
+    formats: ["image/webp"],
+
+    // Optimize for external images
     remotePatterns: [
       {
         protocol: "https",
         hostname: "api.shenlong.cloud",
+        port: "",
+        pathname: "/storage/**",
       },
     ],
-    formats: ["image/webp"],
+    // Device sizes for responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    // Image sizes for different layouts
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // Minimize cache time for dynamic content
+    minimumCacheTTL: 60 * 60 * 24 * 7, // 7 days
+    // Enable dangerous SVG for icons (if needed)
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
 
