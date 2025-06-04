@@ -11,7 +11,10 @@
     "type-check": "tsc --noEmit",
     "clean": "rimraf .next out",
     "clean:cache": "rimraf .next/cache",
-    "audit": "npm audit && npm run type-check && npm run lint"
+    "audit": "npm audit && npm run type-check && npm run lint",
+    "analyze": "ANALYZE=true next build",
+    "preview": "next start",
+    "size": "npm run build && next-bundle-analyzer"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -24,7 +27,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.12.1",
-    "lighthouse": "^12.6.1",
     "lucide": "^0.511.0",
     "lucide-react": "^0.511.0",
     "next": "15.3.2",
@@ -49,7 +51,21 @@
     "eslint-config-next": "15.3.2",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.0",
-    "typescript": "^5",
-    "webpack-bundle-analyzer": "^4.10.2"
+    "typescript": "^5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "not ie > 0",
+      "not samsung > 0",
+      "not and_uc > 0"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
