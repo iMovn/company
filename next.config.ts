@@ -4,7 +4,11 @@ const nextConfig: NextConfig = {
   // Bật cache
   experimental: {
     useCache: true,
-
+    staleTimes: {
+      dynamic: 60, // 60 seconds for dynamic pages
+      static: 3600, // 1 hour for static pages
+    },
+    optimisticClientCache: true,
     optimizePackageImports: [
       "lucide-react",
       "@radix-ui/react-icons",
