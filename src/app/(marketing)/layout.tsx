@@ -1,9 +1,12 @@
-import type { Metadata } from "next";
+import { defaultMetadata } from "@config/metadata";
 
-export const metadata: Metadata = {
-  title: "Marketing",
+export const metadata = {
+  ...defaultMetadata,
+  title: {
+    default: "Dịch vụ Digital Marketing | iMovn",
+    template: "%s | Dịch vụ iMovn",
+  },
 };
-
 // Static optimization for marketing pages
 export const dynamic = "force-static";
 export const revalidate = 3600; // 1 hour

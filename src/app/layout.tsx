@@ -1,4 +1,3 @@
-import type { Viewport } from "next";
 import { Inter, Archivo, Mulish } from "next/font/google";
 import "./../styles/globals.css";
 import NextTopLoader from "nextjs-toploader";
@@ -9,6 +8,8 @@ import { ThemeProvider } from "./providers/theme";
 import { InitIcons } from "@components/ui/LucideIcon";
 import { GradientBackground } from "@components/ui/GradientBackground/FourColor";
 import FooterServer from "@components/common/footer";
+import { defaultMetadata } from "@config/metadata";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,13 +32,7 @@ const mulishSans = Mulish({
   preload: true,
 });
 
-// Viewport configuration for better mobile experience
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-};
+export const metadata = defaultMetadata;
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -71,6 +66,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
             <ScrollToTop />
           </GradientBackground>
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>

@@ -1,10 +1,13 @@
-import type { Metadata } from "next";
 import "@styles/components/post.scss";
 import { Container } from "@components/ui/Containers";
+import { defaultMetadata } from "@config/metadata";
 
-export const metadata: Metadata = {
-  title: "Content",
-  description: "Blog posts, articles, and resources",
+export const metadata = {
+  ...defaultMetadata,
+  title: {
+    default: "Kiến thức Digital Marketing | iMovn",
+    template: "%s | Kiến thức iMovn",
+  },
 };
 
 // Dynamic with ISR for content pages

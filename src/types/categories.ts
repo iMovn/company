@@ -71,6 +71,7 @@ export interface CategoryDetails extends BaseCategory {
   meta_title?: string;
   meta_description?: string;
   canonical?: string;
+  image_url?: string;
   children: Category[];
 }
 
