@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { CategoryData } from "types/categories";
 import { Post } from "types/post";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const SITE_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 const METADATA_BASE = new URL(SITE_URL);
 
 export const defaultMetadata: Metadata = {
