@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
   compress: true,
   // Bật chế độ React strict
   reactStrictMode: true,
-
+  poweredByHeader: false,
   // Cấu hình images từ domain ngoài
   images: {
     // Modern formats for better compression
@@ -65,7 +65,25 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  poweredByHeader: false,
+  webpack: (config) => {
+    config.optimization.splitChunks = {
+      chunks: "all",
+      maxSize: 244 * 1024, // 244KB max per chunk
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    };
+    return config;
+  },
 };
 
 // Bundle analyzer setup: npm i @next/bundle-analyzer

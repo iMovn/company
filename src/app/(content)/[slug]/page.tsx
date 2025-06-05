@@ -18,7 +18,6 @@ const METADATA_BASE = new URL(DOMAIN_URL);
 
 // Lazy load components with proper loading states
 const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"));
-
 const PostDetail = dynamic(() => import("@modules/content/PostDetail"));
 
 interface Props {
