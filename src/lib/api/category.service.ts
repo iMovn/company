@@ -43,7 +43,7 @@ export const fetchCategoryBySlug = cache(
         }
 
         if (page < 1 || limit < 1) {
-          console.error("Invalid pagination parameters");
+          console.error("Invalid pagination parameters.");
           return null;
         }
 
@@ -77,7 +77,7 @@ export const fetchCategoryBySlug = cache(
 
         // Validate response structure
         if (!result || typeof result.status !== "boolean") {
-          console.error("Invalid response structure from API");
+          console.error("Invalid response structure from API.");
           return null;
         }
 
