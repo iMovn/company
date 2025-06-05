@@ -40,8 +40,8 @@ export const defaultMetadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    // shortcut: "/favicon-16x16.png",
+    // apple: "/apple-touch-icon.png",
   },
   openGraph: {
     type: "website",
@@ -70,7 +70,10 @@ export function buildPostMetadata(post: Post, slug: string): Metadata {
     ...defaultMetadata,
     title: post.meta_title || post.name,
     description:
-      post.meta_description || post.description || defaultMetadata.description,
+      post.meta_description ||
+      post.description ||
+      defaultMetadata.description ||
+      "Add new description!",
     alternates: {
       canonical: post.canonical || `${SITE_URL}/${slug}`,
     },
@@ -129,7 +132,8 @@ export function buildCategoryMetadata(
     description:
       category.details.meta_description ||
       category.details.description ||
-      defaultMetadata.description,
+      defaultMetadata.description ||
+      "Add new description!",
     alternates: {
       canonical: category.details.canonical || `${SITE_URL}/${slug}`,
     },

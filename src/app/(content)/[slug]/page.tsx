@@ -17,8 +17,12 @@ import { notFound } from "next/navigation";
 const METADATA_BASE = new URL(DOMAIN_URL);
 
 // Lazy load components with proper loading states
-const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"));
-const PostDetail = dynamic(() => import("@modules/content/PostDetail"));
+const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"), {
+  ssr: true, // Keep SSR for SEO
+});
+const PostDetail = dynamic(() => import("@modules/content/PostDetail"), {
+  ssr: true, // Keep SSR for SEO
+});
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -80,20 +84,19 @@ export default async function ContentPage({ params, searchParams }: Props) {
   };
 
   try {
-    const [post, category, sidebarData] = await Promise.all([
-      fetchPostBySlug(slug).catch(() => null),
-      fetchCategoryBySlug(slug, categoryOptions).catch(() => null),
-      fetchSidebarData(SIDEBAR_POSTS_LIMIT).catch(() => null),
+    const post = await fetchPostBySlug(slug);
+    if (post) {
+      return <PostDetail post={post} />;
+    }
+
+    const [category, sidebarData] = await Promise.all([
+      fetchCategoryBySlug(slug, categoryOptions),
+      fetchSidebarData(SIDEBAR_POSTS_LIMIT),
     ]);
 
-    if (post) return <PostDetail post={post} />;
-    if (category)
-      return (
-        <CategoryPage
-          category={category}
-          sidebarData={sidebarData ?? undefined}
-        />
-      );
+    if (category) {
+      return <CategoryPage category={category} sidebarData={sidebarData} />;
+    }
   } catch (error) {
     console.error("Error loading page content:", error);
   }
