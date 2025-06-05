@@ -66,11 +66,11 @@ export interface Category extends BaseCategory {
 }
 
 export interface CategoryDetails extends BaseCategory {
-  description: string | null;
-  content: string | null;
-  meta_title: string | null;
-  meta_description: string | null;
-  canonical: string | null;
+  description?: string;
+  content?: string;
+  meta_title?: string;
+  meta_description?: string;
+  canonical?: string;
   children: Category[];
 }
 

@@ -16,14 +16,8 @@ import { CategoryData } from "types/categories";
 import { Post } from "types/post";
 
 // Lazy load components để giảm initial bundle
-// const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"));
-// const PostDetail = dynamic(() => import("@modules/content/PostDetail"));
-const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"), {
-  loading: () => <div>Đang tải trang danh mục...</div>,
-});
-const PostDetail = dynamic(() => import("@modules/content/PostDetail"), {
-  loading: () => <div>Đang tải bài viết...</div>,
-});
+const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"));
+const PostDetail = dynamic(() => import("@modules/content/PostDetail"));
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -36,8 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     const [post, category] = await Promise.all([
-      fetchPostBySlug(slug),
-      fetchCategoryBySlug(slug),
+      fetchPostBySlug(slug).catch(() => null),
+      fetchCategoryBySlug(slug).catch(() => null),
     ]);
 
     if (post) return buildPostMetadata(post, slug);
@@ -84,9 +78,9 @@ export default async function ContentPage({ params, searchParams }: Props) {
   try {
     // Sử dụng Promise.all để fetch song song cả post, category và sidebar data
     const [post, category, sidebarData] = await Promise.all([
-      fetchPostBySlug(slug),
-      fetchCategoryBySlug(slug, categoryOptions),
-      fetchSidebarData(SIDEBAR_POSTS_LIMIT),
+      fetchPostBySlug(slug).catch(() => null),
+      fetchCategoryBySlug(slug, categoryOptions).catch(() => null),
+      fetchSidebarData(SIDEBAR_POSTS_LIMIT).catch(),
     ]);
 
     if (post) return <PostDetail post={post} />;
@@ -120,6 +114,8 @@ function buildPostMetadata(post: Post, slug: string): Metadata {
     },
     twitter: {
       card: "summary_large_image",
+      title: post.meta_title || post.name,
+      description: post.meta_description || post.description || "",
       images,
     },
   };
@@ -139,6 +135,12 @@ function buildCategoryMetadata(category: CategoryData, slug: string): Metadata {
       title: details.meta_title || details.name,
       description: details.meta_description || details.description || "",
       type: "website",
+      images: [{ url: defaultImage }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: details.meta_title || details.name,
+      description: details.meta_description || details.description || "",
       images: [{ url: defaultImage }],
     },
     other: {

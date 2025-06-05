@@ -4,10 +4,6 @@ const nextConfig: NextConfig = {
   // Bật cache
   experimental: {
     useCache: true,
-    staleTimes: {
-      dynamic: 60, // 1 minute for dynamic content
-      static: 3600, // 1 hour for static content
-    },
 
     optimizePackageImports: [
       "lucide-react",
