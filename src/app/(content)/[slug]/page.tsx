@@ -1,11 +1,29 @@
-import CategoryPage from "@modules/content/CategoryPage";
-import PostDetail from "@modules/content/PostDetail";
 import { fetchCategoryBySlug } from "lib/api/category.service";
 import { fetchPostBySlug } from "lib/api/post.service";
 import { fetchSidebarData } from "lib/api/sidebar.service";
-import { DOMAIN_URL } from "lib/constants/global";
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_SORT_DIRECTION,
+  DEFAULT_SORT_FIELD,
+  DOMAIN_URL,
+  SIDEBAR_POSTS_LIMIT,
+} from "lib/constants/global";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
+import { CategoryData } from "types/categories";
+
+import { Post } from "types/post";
+
+// Lazy load components để giảm initial bundle
+// const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"));
+// const PostDetail = dynamic(() => import("@modules/content/PostDetail"));
+const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"), {
+  loading: () => <div>Đang tải trang danh mục...</div>,
+});
+const PostDetail = dynamic(() => import("@modules/content/PostDetail"), {
+  loading: () => <div>Đang tải bài viết...</div>,
+});
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -14,86 +32,33 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Get all resolved parameters at once
-  const resolvedParams = await params;
+  const { slug } = await params;
 
-  // Thử lấy post trước
-  const post = await fetchPostBySlug(resolvedParams.slug);
+  try {
+    const [post, category] = await Promise.all([
+      fetchPostBySlug(slug),
+      fetchCategoryBySlug(slug),
+    ]);
 
-  if (post) {
-    return {
-      title: post.meta_title || post.name,
-      description: post.meta_description || post.description || "",
-      alternates: {
-        canonical: post.canonical || `${DOMAIN_URL}/${resolvedParams.slug}`,
-      },
-      openGraph: {
-        title: post.meta_title || post.name,
-        description: post.meta_description || post.description || "",
-        type: "article",
-        images: post.image_url ? [post.image_url] : [],
-      },
-    };
-  }
-
-  // Nếu không phải post, thử lấy category
-  const category = await fetchCategoryBySlug(resolvedParams.slug);
-
-  if (category) {
-    return {
-      title: category.details.meta_title || category.details.name,
-      description:
-        category.details.meta_description || category.details.description || "",
-      alternates: {
-        canonical:
-          category.details.canonical || `${DOMAIN_URL}/${resolvedParams.slug}`,
-      },
-      openGraph: {
-        title: category.details.meta_title || category.details.name,
-        description:
-          category.details.meta_description ||
-          category.details.description ||
-          "",
-        type: "website",
-        images: [
-          {
-            url: `${DOMAIN_URL}/images/placeholder.png`,
-          },
-        ],
-      },
-      // Structured data cho SEO
-      other: {
-        "application/ld+json": JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: category.details.meta_title || category.details.name,
-          description:
-            category.details.meta_description ||
-            category.details.description ||
-            "",
-          url: `${DOMAIN_URL}/${resolvedParams.slug}`,
-          breadcrumb: {
-            "@type": "BreadcrumbList",
-            itemListElement: category.breadcrumbs?.map((item, index) => ({
-              "@type": "ListItem",
-              position: index + 1,
-              name: item.name,
-              item: item.slug,
-            })),
-          },
-        }),
-      },
-    };
+    if (post) return buildPostMetadata(post, slug);
+    if (category) return buildCategoryMetadata(category, slug);
+  } catch (error) {
+    console.error("Error generating metadata:", error);
   }
 
   return {
     title: "Không tìm thấy nội dung",
     description: "Trang bạn yêu cầu không tồn tại",
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 
 export default async function ContentPage({ params, searchParams }: Props) {
   // Get all resolved parameters at once
-  const resolvedParams = await params;
+  const { slug } = await params;
   const resolvedSearchParams = await searchParams;
 
   // Extract pagination parameters
@@ -102,9 +67,11 @@ export default async function ContentPage({ params, searchParams }: Props) {
     : 1;
   const limit = resolvedSearchParams.limit
     ? parseInt(resolvedSearchParams.limit as string)
-    : 9;
-  const sort_name = (resolvedSearchParams.sort_name as string) || "id";
-  const sort_by = (resolvedSearchParams.sort_by as "asc" | "desc") || "desc";
+    : DEFAULT_LIMIT;
+  const sort_name =
+    (resolvedSearchParams.sort_name as string) || DEFAULT_SORT_FIELD;
+  const sort_by =
+    (resolvedSearchParams.sort_by as "asc" | "desc") || DEFAULT_SORT_DIRECTION;
 
   // Category query options
   const categoryOptions = {
@@ -114,20 +81,85 @@ export default async function ContentPage({ params, searchParams }: Props) {
     sort_by,
   };
 
-  // Sử dụng Promise.all để fetch song song cả post, category và sidebar data
-  const [post, category, sidebarData] = await Promise.all([
-    fetchPostBySlug(resolvedParams.slug),
-    fetchCategoryBySlug(resolvedParams.slug, categoryOptions),
-    fetchSidebarData(5),
-  ]);
-  if (post) {
-    return <PostDetail post={post} />;
+  try {
+    // Sử dụng Promise.all để fetch song song cả post, category và sidebar data
+    const [post, category, sidebarData] = await Promise.all([
+      fetchPostBySlug(slug),
+      fetchCategoryBySlug(slug, categoryOptions),
+      fetchSidebarData(SIDEBAR_POSTS_LIMIT),
+    ]);
+
+    if (post) return <PostDetail post={post} />;
+    if (category)
+      return <CategoryPage category={category} sidebarData={sidebarData} />;
+  } catch (error) {
+    console.error("Error loading page content:", error);
   }
 
-  if (category) {
-    return <CategoryPage category={category} sidebarData={sidebarData} />;
-  }
-
-  // Nếu không tìm thấy cả hai
   return notFound();
+}
+
+// Helper functions for metadata
+function buildPostMetadata(post: Post, slug: string): Metadata {
+  const images = post.image_url ? [{ url: new URL(post.image_url) }] : [];
+
+  return {
+    title: post.meta_title || post.name,
+    description: post.meta_description || post.description || "",
+    alternates: {
+      canonical: post.canonical || `${DOMAIN_URL}/${slug}`,
+    },
+    openGraph: {
+      title: post.meta_title || post.name,
+      description: post.meta_description || post.description || "",
+      type: "article",
+      publishedTime: post.created_at,
+      modifiedTime: post.updated_at,
+      authors: post.users ? [post.users.name] : [],
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      images,
+    },
+  };
+}
+
+function buildCategoryMetadata(category: CategoryData, slug: string): Metadata {
+  const { details } = category;
+  const defaultImage = `${DOMAIN_URL}/images/placeholder.png`;
+
+  return {
+    title: details.meta_title || details.name,
+    description: details.meta_description || details.description || "",
+    alternates: {
+      canonical: details.canonical || `${DOMAIN_URL}/${slug}`,
+    },
+    openGraph: {
+      title: details.meta_title || details.name,
+      description: details.meta_description || details.description || "",
+      type: "website",
+      images: [{ url: defaultImage }],
+    },
+    other: {
+      "application/ld+json": JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: details.meta_title || details.name,
+        description: details.meta_description || details.description || "",
+        url: `${DOMAIN_URL}/${slug}`,
+        ...(category.breadcrumbs && {
+          breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: category.breadcrumbs.map((item, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: item.name,
+              item: `${DOMAIN_URL}/${item.slug}`,
+            })),
+          },
+        }),
+      }),
+    },
+  };
 }
