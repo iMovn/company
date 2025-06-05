@@ -1,21 +1,26 @@
 "use client";
-import { Category, CategoryData } from "types/categories";
-import PostCard from "./components/PostCard";
-import Breadcrumb from "@components/common/breadcrumb";
-import { useState } from "react";
-import { Container } from "@components/ui/Containers";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { Button } from "@components/ui/Button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@components/ui/Dialog";
-import Pagination from "@components/ui/Pagination";
+
+// Dynamic imports for heavy components
+const PostCard = dynamic(() => import("./components/PostCard"));
+const CategorySidebar = dynamic(() => import("./components/CategorySidebar"), {
+  ssr: true, // vẫn cho SSR vì sidebar quan trọng SEO
+  loading: () => (
+    <div className="bg-gray-50 p-4 rounded-lg">
+      <h3 className="font-semibold mb-3">Đang tải...</h3>
+      <p className="text-sm text-gray-600">Sidebar content</p>
+    </div>
+  ),
+});
+
+// Static imports for critical components
+import { Category, CategoryData } from "types/categories";
 import { PostItem } from "types/all-posts";
-import CategorySidebar from "./components/CategorySidebar";
+import Breadcrumb from "@components/common/breadcrumb";
+import { Container } from "@components/ui/Containers";
+import Pagination from "@components/ui/Pagination";
+import ReadMoreDialog from "./components/ReadMoreDialog";
 
 interface CategoryPageProps {
   category?: CategoryData | null;
@@ -29,9 +34,6 @@ export default function CategoryPage({
   category,
   sidebarData,
 }: CategoryPageProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  // Xử lý trường hợp không có dữ liệu
   if (!category || !category.details) {
     return notFound();
   }
@@ -48,7 +50,7 @@ export default function CategoryPage({
           <h1 className="md:text-6xl text-3xl font-semibold font-archivo mb-3">
             {details.name}
           </h1>
-          {category.details.description && (
+          {details.description && (
             <p className="text-sm italic text-primary/95">
               {details.description}
             </p>
@@ -58,28 +60,26 @@ export default function CategoryPage({
 
       {/* Posts List */}
       <div className="flex flex-col-reverse md:flex-row gap-6 mb-8">
+        {/* Sidebar - Non-critical */}
         <aside className="aside-layout-category md:w-[30%] w-full">
           <div className="md:sticky top-8">
-            {sidebarData ? (
-              <CategorySidebar
-                categories={sidebarData.categories}
-                recentPosts={sidebarData.recentPosts}
-                currentCategorySlug={details.slug}
-              />
-            ) : (
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-semibold mb-3">Đang tải...</h3>
-                <p className="text-sm text-gray-600">Sidebar content</p>
-              </div>
-            )}
+            <CategorySidebar
+              categories={sidebarData?.categories || []}
+              recentPosts={sidebarData?.recentPosts || []}
+              currentCategorySlug={details.slug}
+            />
           </div>
         </aside>
-        {/* Main Content */}
+        {/* Posts List - Critical content */}
         <div className="right-layout-category md:w-[70%] w-full space-y-6">
           {items?.data && items.data.length > 0 ? (
-            <div className="">
-              {items.data.map((post) => (
-                <PostCard key={post.id} post={post} />
+            <div className="grid gap-6">
+              {items.data.map((post, index) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  priority={index < 3} // LCP priority for first 3 items
+                />
               ))}
             </div>
           ) : (
@@ -104,39 +104,9 @@ export default function CategoryPage({
             className="prose prose-gray max-w-none text-base text-justify line-clamp-3"
             dangerouslySetInnerHTML={{ __html: details.content }}
           />
-          <div className="mt-4 flex justify-center">
-            <Button
-              variant="outline"
-              className="cursor-pointer"
-              onClick={() => setIsDialogOpen(true)}
-            >
-              Đọc thêm
-            </Button>
-          </div>
+          <ReadMoreDialog title={details.name} content={details.content} />
         </section>
       )}
-
-      {/* Dialog hiển thị toàn bộ nội dung */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <Container
-          size="md"
-          as={DialogContent}
-          className="max-h-[80vh] overflow-y-auto bg-neutral-50 dark:bg-neutral-900"
-        >
-          <DialogHeader className="sr-only">
-            <DialogTitle>{details.name}</DialogTitle>
-            <DialogDescription className="sr-only">
-              Mô tả trợ năng
-            </DialogDescription>
-          </DialogHeader>
-          {details.content && (
-            <section
-              className="entry-content prose prose-gray max-w-none text-base text-justify"
-              dangerouslySetInnerHTML={{ __html: details.content }}
-            />
-          )}
-        </Container>
-      </Dialog>
     </Container>
   );
 }

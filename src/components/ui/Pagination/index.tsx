@@ -109,13 +109,13 @@ export default function Pagination({
           {prev_page_url ? (
             <Link
               href={createPageUrl(current_page - 1)}
-              className="inline-flex items-center px-2 py-1 text-sm font-medium border rounded-lg overflow-hidden hover:text-primary dark:hover:text-neutral-1000 hover:shadow-md dark:bg-neutral-950 bg-neutral-0 hover:dark:bg-neutral-300 transition-shadow"
+              className="inline-flex items-center px-2 py-1 text-sm font-medium border rounded-xl overflow-hidden hover:text-primary dark:hover:text-neutral-1000 hover:shadow-md dark:bg-neutral-950 bg-neutral-0 hover:dark:bg-neutral-300 transition-shadow"
             >
               <ChevronLeft className="w-3 h-3 mr-1" />
               Trước
             </Link>
           ) : (
-            <span className="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed">
+            <span className="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed">
               <ChevronLeft className="w-3 h-3 mr-1" />
               Trước
             </span>
@@ -142,7 +142,7 @@ export default function Pagination({
                 <Link
                   key={pageNumber}
                   href={createPageUrl(pageNumber)}
-                  className={`inline-flex items-center px-2 py-1 text-sm font-medium border rounded-md transition-colors ${
+                  className={`inline-flex items-center px-3 py-1 text-sm font-medium border rounded-xl transition-colors ${
                     isActive
                       ? "bg-primary text-white border-primary cursor-default"
                       : "text-gray-500 bg-white border-gray-300 hover:bg-gray-50 hover:text-primary"
@@ -159,13 +159,13 @@ export default function Pagination({
           {next_page_url ? (
             <Link
               href={createPageUrl(current_page + 1)}
-              className="inline-flex items-center px-2 py-1 text-sm font-medium border rounded-lg overflow-hidden hover:text-primary dark:hover:text-neutral-1000 hover:shadow-md dark:bg-neutral-950 bg-neutral-0 hover:dark:bg-neutral-300 transition-shadow"
+              className="inline-flex items-center px-2 py-1 text-sm font-medium border rounded-xl overflow-hidden hover:text-primary dark:hover:text-neutral-1000 hover:shadow-md dark:bg-neutral-950 bg-neutral-0 hover:dark:bg-neutral-300 transition-shadow"
             >
               Sau
               <ChevronRight className="w-3 h-3 ml-1" />
             </Link>
           ) : (
-            <span className="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-300 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed">
+            <span className="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed">
               Sau
               <ChevronRight className="w-3 h-3 ml-1" />
             </span>

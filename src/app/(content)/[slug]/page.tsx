@@ -3,6 +3,7 @@ import PostDetail from "@modules/content/PostDetail";
 import { fetchCategoryBySlug } from "lib/api/category.service";
 import { fetchPostBySlug } from "lib/api/post.service";
 import { fetchSidebarData } from "lib/api/sidebar.service";
+import { DOMAIN_URL } from "lib/constants/global";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -21,11 +22,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (post) {
     return {
       title: post.meta_title || post.name,
-      description: post.meta_description || post.description,
+      description: post.meta_description || post.description || "",
       alternates: {
-        canonical: `/${resolvedParams.slug}`,
+        canonical: post.canonical || `${DOMAIN_URL}/${resolvedParams.slug}`,
       },
       openGraph: {
+        title: post.meta_title || post.name,
+        description: post.meta_description || post.description || "",
+        type: "article",
         images: post.image_url ? [post.image_url] : [],
       },
     };
@@ -36,10 +40,47 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (category) {
     return {
-      title: category.details.name,
-      description: category.details.description,
+      title: category.details.meta_title || category.details.name,
+      description:
+        category.details.meta_description || category.details.description || "",
       alternates: {
-        canonical: `/${resolvedParams.slug}`,
+        canonical:
+          category.details.canonical || `${DOMAIN_URL}/${resolvedParams.slug}`,
+      },
+      openGraph: {
+        title: category.details.meta_title || category.details.name,
+        description:
+          category.details.meta_description ||
+          category.details.description ||
+          "",
+        type: "website",
+        images: [
+          {
+            url: `${DOMAIN_URL}/images/placeholder.png`,
+          },
+        ],
+      },
+      // Structured data cho SEO
+      other: {
+        "application/ld+json": JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: category.details.meta_title || category.details.name,
+          description:
+            category.details.meta_description ||
+            category.details.description ||
+            "",
+          url: `${DOMAIN_URL}/${resolvedParams.slug}`,
+          breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: category.breadcrumbs?.map((item, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: item.name,
+              item: item.slug,
+            })),
+          },
+        }),
       },
     };
   }
