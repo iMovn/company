@@ -8,23 +8,18 @@ import {
   DOMAIN_URL,
   SIDEBAR_POSTS_LIMIT,
 } from "lib/constants/global";
+import { buildCategoryMetadata, buildPostMetadata } from "@config/metadata";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { CategoryData } from "types/categories";
-import { Post } from "types/post";
 
 // Configure default metadata base
 const METADATA_BASE = new URL(DOMAIN_URL);
 
 // Lazy load components with proper loading states
-const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"), {
-  loading: () => <div className="min-h-[80vh]">Loading category...</div>,
-});
+const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"));
 
-const PostDetail = dynamic(() => import("@modules/content/PostDetail"), {
-  loading: () => <div className="min-h-[80vh]">Loading post...</div>,
-});
+const PostDetail = dynamic(() => import("@modules/content/PostDetail"));
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -105,142 +100,4 @@ export default async function ContentPage({ params, searchParams }: Props) {
   }
 
   return notFound();
-}
-
-function buildPostMetadata(post: Post, slug: string): Metadata {
-  const images = post.image_url
-    ? [
-        {
-          url: new URL(post.image_url, METADATA_BASE),
-          width: 1200,
-          height: 630,
-          alt: post.name,
-        },
-      ]
-    : [];
-
-  return {
-    metadataBase: METADATA_BASE,
-    title: post.meta_title || post.name,
-    description: post.meta_description || post.description || "",
-    alternates: {
-      canonical: post.canonical || `${DOMAIN_URL}/${slug}`,
-    },
-    openGraph: {
-      title: post.meta_title || post.name,
-      description: post.meta_description || post.description || "",
-      type: "article",
-      publishedTime: post.created_at,
-      modifiedTime: post.updated_at,
-      authors: post.users ? [post.users.name] : [],
-      tags: post.categories?.map((c) => c.name) || [],
-      images,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.meta_title || post.name,
-      description: post.meta_description || post.description || "",
-      images,
-      creator: post.users?.name || undefined,
-    },
-    other: {
-      "article:published_time": post.created_at,
-      "article:modified_time": post.updated_at,
-      ...(post.users && { "article:author": post.users.name }),
-      ...buildPostSchemaMarkup(post, slug),
-    },
-  };
-}
-
-function buildCategoryMetadata(category: CategoryData, slug: string): Metadata {
-  const { details } = category;
-  const defaultImage = {
-    url: new URL("/images/placeholder.png", METADATA_BASE),
-    width: 1200,
-    height: 630,
-    alt: details.name,
-  };
-
-  return {
-    metadataBase: METADATA_BASE,
-    title: details.meta_title || details.name,
-    description: details.meta_description || details.description || "",
-    alternates: {
-      canonical: details.canonical || `${DOMAIN_URL}/${slug}`,
-    },
-    openGraph: {
-      title: details.meta_title || details.name,
-      description: details.meta_description || details.description || "",
-      type: "website",
-      images: [defaultImage],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: details.meta_title || details.name,
-      description: details.meta_description || details.description || "",
-      images: [defaultImage],
-    },
-    other: {
-      ...buildCategorySchemaMarkup(category, slug),
-    },
-  };
-}
-
-function buildPostSchemaMarkup(post: Post, slug: string) {
-  return {
-    "application/ld+json": JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      headline: post.name,
-      description: post.description,
-      url: `${DOMAIN_URL}/${slug}`,
-      datePublished: post.created_at,
-      dateModified: post.updated_at,
-      ...(post.image_url && {
-        image: {
-          "@type": "ImageObject",
-          url: new URL(post.image_url, METADATA_BASE).toString(),
-          width: 1200,
-          height: 630,
-        },
-      }),
-      ...(post.users && {
-        author: {
-          "@type": "Person",
-          name: post.users.name,
-        },
-      }),
-      publisher: {
-        "@type": "Organization",
-        name: "iMovn",
-        logo: {
-          "@type": "ImageObject",
-          url: new URL("/logos/imo-vn-brand.png", METADATA_BASE).toString(),
-        },
-      },
-    }),
-  };
-}
-
-function buildCategorySchemaMarkup(category: CategoryData, slug: string) {
-  return {
-    "application/ld+json": JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      name: category.details.name,
-      description: category.details.description,
-      url: `${DOMAIN_URL}/${slug}`,
-      ...(category.breadcrumbs && {
-        breadcrumb: {
-          "@type": "BreadcrumbList",
-          itemListElement: category.breadcrumbs.map((item, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            name: item.name,
-            item: `${DOMAIN_URL}/${item.slug}`,
-          })),
-        },
-      }),
-    }),
-  };
 }

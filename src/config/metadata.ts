@@ -110,6 +110,12 @@ export function buildPostMetadata(post: Post, slug: string): Metadata {
         images: [new URL(post.image_url, METADATA_BASE).toString()],
       }),
     },
+    other: {
+      "article:published_time": post.created_at,
+      "article:modified_time": post.updated_at,
+      ...(post.users && { "article:author": post.users.name }),
+      ...buildPostSchemaMarkup(post, slug),
+    },
   };
 }
 
@@ -158,5 +164,70 @@ export function buildCategoryMetadata(
         images: [new URL(category.details.image_url, METADATA_BASE).toString()],
       }),
     },
+    other: {
+      ...buildCategorySchemaMarkup(category, slug),
+    },
+  };
+}
+
+export function buildPostSchemaMarkup(post: Post, slug: string) {
+  return {
+    "application/ld+json": JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.name,
+      description: post.description,
+      url: `${SITE_URL}/${slug}`,
+      datePublished: post.created_at,
+      dateModified: post.updated_at,
+      ...(post.image_url && {
+        image: {
+          "@type": "ImageObject",
+          url: new URL(post.image_url, METADATA_BASE).toString(),
+          width: 1200,
+          height: 630,
+        },
+      }),
+      ...(post.users && {
+        author: {
+          "@type": "Person",
+          name: post.users.name,
+        },
+      }),
+      publisher: {
+        "@type": "Organization",
+        name: "iMovn",
+        logo: {
+          "@type": "ImageObject",
+          url: new URL("/logos/imo-vn-brand.png", METADATA_BASE).toString(),
+        },
+      },
+    }),
+  };
+}
+
+export function buildCategorySchemaMarkup(
+  category: CategoryData,
+  slug: string
+) {
+  return {
+    "application/ld+json": JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: category.details.name,
+      description: category.details.description,
+      url: `${SITE_URL}/${slug}`,
+      ...(category.breadcrumbs && {
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: category.breadcrumbs.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: item.name,
+            item: `${SITE_URL}/${item.slug}`,
+          })),
+        },
+      }),
+    }),
   };
 }
