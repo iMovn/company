@@ -5,10 +5,9 @@ import { formatDateVi } from "lib/utils/format";
 
 interface PostCardProps {
   post: Post;
-  priority?: boolean;
 }
 
-export default function PostCard({ post, priority = false }: PostCardProps) {
+export default function PostCard({ post }: PostCardProps) {
   return (
     <article className="box-item group flex flex-col-reverse md:flex-row gap-4 mb-4 p-4 border rounded-lg overflow-hidden hover:text-primary hover:shadow-md dark:bg-neutral-950 bg-neutral-0 hover:dark:bg-neutral-400 transition-shadow">
       <div className="box-text flex-1 md:order-first pr-4">
@@ -37,7 +36,6 @@ export default function PostCard({ post, priority = false }: PostCardProps) {
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
             className="object-cover select-none hover:scale-105 transition-transform duration-300 rounded-md"
-            priority={priority}
           />
         </Link>
       )}

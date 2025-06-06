@@ -3,16 +3,25 @@ import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 
 // Dynamic imports for heavy components
-const PostCard = dynamic(() => import("./components/PostCard"));
-const CategorySidebar = dynamic(() => import("./components/CategorySidebar"), {
-  ssr: true, // vẫn cho SSR vì sidebar quan trọng SEO
-  loading: () => (
-    <div className="bg-gray-50 p-4 rounded-lg">
-      <h3 className="font-semibold mb-3">Đang tải...</h3>
-      <p className="text-sm text-gray-600">Sidebar content</p>
-    </div>
-  ),
-});
+const PostCard = dynamic(() => import("@modules/content/components/PostCard"));
+const CategorySidebar = dynamic(
+  () => import("@modules/content/components/CategorySidebar"),
+  {
+    ssr: true, // vẫn cho SSR vì sidebar quan trọng SEO
+    loading: () => (
+      <div className="bg-gray-50 p-4 rounded-lg">
+        <h3 className="font-semibold mb-3">Đang tải...</h3>
+        <p className="text-sm text-gray-600">Sidebar content</p>
+      </div>
+    ),
+  }
+);
+const ReadMoreDialog = dynamic(
+  () => import("@modules/content/components/ReadMoreDialog"),
+  {
+    ssr: true, // vẫn cho SSR vì sidebar quan trọng SEO
+  }
+);
 
 // Static imports for critical components
 import { Category, CategoryData } from "types/categories";
@@ -20,7 +29,6 @@ import { PostItem } from "types/all-posts";
 import Breadcrumb from "@components/common/breadcrumb";
 import { Container } from "@components/ui/Containers";
 import Pagination from "@components/ui/Pagination";
-import ReadMoreDialog from "./components/ReadMoreDialog";
 
 interface CategoryPageProps {
   category?: CategoryData | null;
@@ -74,12 +82,8 @@ export default function CategoryPage({
         <div className="right-layout-category md:w-[70%] w-full space-y-6">
           {items?.data && items.data.length > 0 ? (
             <div className="grid gap-6">
-              {items.data.map((post, index) => (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  priority={index < 3} // LCP priority for first 3 items
-                />
+              {items.data.map((post) => (
+                <PostCard key={post.id} post={post} />
               ))}
             </div>
           ) : (

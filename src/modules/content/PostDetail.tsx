@@ -36,9 +36,7 @@ export default function PostDetail({ post }: { post: Post }) {
             <ul role="list">
               <li className="md:flex items-center text-xs text-neutral-800 dark:text-neutral-300 gap-4">
                 <p dangerouslySetInnerHTML={{ __html: post.users.name }} />
-                <p className="">
-                  {new Date(post.created_at).toLocaleDateString()}
-                </p>
+                <p className="">{formatDateVi(post.created_at)}</p>
                 <p>{post.views} lượt xem</p>
               </li>
             </ul>
@@ -123,7 +121,7 @@ export default function PostDetail({ post }: { post: Post }) {
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
                           className="object-cover select-none hover:scale-105 transition-transform duration-300 rounded-md"
-                          priority
+                          loading="lazy"
                         />
                       </Link>
                     )}
