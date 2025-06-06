@@ -6,7 +6,6 @@ import { cn } from "lib/utils/utils";
 import HeaderServer from "@components/common/header/header.server";
 import { ThemeProvider } from "./providers/theme";
 import { InitIcons } from "@components/ui/LucideIcon";
-import { GradientBackground } from "@components/ui/GradientBackground/FourColor";
 import FooterServer from "@components/common/footer";
 import { defaultMetadata } from "@config/metadata";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -56,16 +55,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
           color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
           height={1.5}
         />
-        <ThemeProvider>
-          <GradientBackground>
-            <InitIcons />
-            <div className="relative flex flex-col min-h-screen">
-              <HeaderServer />
-              {children}
-              <FooterServer />
-            </div>
-            <ScrollToTop />
-          </GradientBackground>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+        >
+          <InitIcons />
+          <div className="relative flex flex-col min-h-screen">
+            <HeaderServer />
+            {children}
+            <FooterServer />
+          </div>
+          <ScrollToTop />
           <SpeedInsights />
         </ThemeProvider>
       </body>

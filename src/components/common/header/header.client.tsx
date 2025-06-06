@@ -8,12 +8,12 @@ import { MenuItem } from "types/menu";
 import { SettingsData } from "types/setting";
 import { useMobileMenu } from "lib/hooks/useMenu";
 import { Container } from "@components/ui/Containers";
-import ThemeToggler from "../navigation/theme-toggle";
 import AnimatedMenuButtonMorph from "@components/ui/Animated/ToggleButton";
 import GradientText from "@components/ui/GradientText";
 
 import { NavSkeleton } from "@components/ui/SkeletonSection";
 import SearchDialog from "../navigation/search-dialog";
+import ThemeToggler from "../navigation/theme-toggle";
 
 // Dynamic imports cho các components nặng
 const DesktopNav = dynamic(() => import("../navigation/desktop-nav"));

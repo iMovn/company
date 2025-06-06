@@ -16,8 +16,6 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    transition: background-color 0.2s, color 0.2s;
   }
 
   html {
@@ -40,18 +38,6 @@
 
 /* ============ CUSTOM UTILITIES ============ */
 @layer utilities {
-  /* Animation utilities */
-  .animate-gradient {
-    animation: gradientMove 8s linear infinite; /* gradientMove animate.css*/
-  }
-
-  .animation-appear {
-    animation: appear 0.5s ease-in-out;
-  }
-
-  .animate-pulse-soft {
-    animation: pulse-soft 1.5s ease-in-out infinite;
-  }
 }
 
 /* ============ COMPONENT STYLES ============ */

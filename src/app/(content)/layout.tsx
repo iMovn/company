@@ -20,10 +20,8 @@ export default function ContentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Container size="lg" className="dynamic-content">
-        <main>{children}</main>
-      </Container>
-    </>
+    <Container size="lg" className="dynamic-content">
+      <main>{children}</main>
+    </Container>
   );
 }

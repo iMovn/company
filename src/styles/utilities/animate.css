@@ -7,6 +7,9 @@
     background-position: 100% 50%;
   }
 }
+.animate-gradient {
+  animation: gradientMove 8s linear infinite; /* gradientMove animate.css*/
+}
 
 @keyframes appear {
   to {
@@ -15,6 +18,9 @@
   from {
     opacity: 1;
   }
+}
+.animation-appear {
+  animation: appear 0.5s ease-in-out;
 }
 
 @keyframes pulse-soft {
@@ -69,4 +75,23 @@
   40% {
     transform: scaleY(1);
   }
+}
+
+/* Animation cho icon theme toggle */
+@keyframes pulse-once {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-pulse-once {
+  animation: pulse-once 0.3s ease-out;
 }

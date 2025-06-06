@@ -4,7 +4,6 @@ import * as React from "react";
 import { Button } from "@components/ui/Button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-
 const ThemeToggler = () => {
   const { theme, setTheme } = useTheme();
   // Thêm state để theo dõi xem component đã mount hay chưa

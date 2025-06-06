@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Post } from "types/categories";
+import { formatDateVi } from "lib/utils/format";
 
 interface BlogSectionProps {
   category: {
@@ -92,10 +93,7 @@ export default function BlogSection({ category }: BlogSectionProps) {
                 </p>
                 <div className="mt-auto pt-2 border-t border-gray-100">
                   <div className="flex justify-between items-center text-xs text-gray-500">
-                    <span>
-                      {new Date(post.created_at).toLocaleDateString("vi-VN")}
-                    </span>
-                    {post.users && <span>Tác giả: {post.users.name}</span>}
+                    <span>{formatDateVi(post.created_at)}</span>
                   </div>
                 </div>
               </div>

@@ -108,13 +108,7 @@ export function GradientBackground({
   };
 
   return (
-    <div
-      className={cn(
-        "w-full transition-all duration-300 ease-in-out",
-        className
-      )}
-      style={gradientStyle}
-    >
+    <div className={cn("w-full", className)} style={gradientStyle}>
       {children}
     </div>
   );
