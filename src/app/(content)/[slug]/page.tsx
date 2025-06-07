@@ -10,19 +10,12 @@ import {
 } from "lib/constants/global";
 import { buildCategoryMetadata, buildPostMetadata } from "@config/metadata";
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
+import PostDetail from "@modules/content/PostDetail";
+import CategoryPage from "@modules/content/CategoryPage";
 
 // Configure default metadata base
 const METADATA_BASE = new URL(DOMAIN_URL);
-
-// Lazy load components with proper loading states
-const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"), {
-  ssr: true, // Keep SSR for SEO
-});
-const PostDetail = dynamic(() => import("@modules/content/PostDetail"), {
-  ssr: true, // Keep SSR for SEO
-});
 
 interface Props {
   params: Promise<{ slug: string }>;

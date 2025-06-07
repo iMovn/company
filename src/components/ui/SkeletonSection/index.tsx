@@ -11,6 +11,41 @@ export function NavSkeleton() {
   );
 }
 
+export function CategoryPageSkeleton() {
+  return (
+    <div className="min-h-screen bg-background animate-pulse">
+      <div className="container mx-auto px-4 py-8">
+        <div className="h-8 bg-muted rounded w-1/2 mb-6"></div>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-32 bg-muted rounded"></div>
+            ))}
+          </div>
+          <div className="h-64 bg-muted rounded"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function PostDetailSkeleton() {
+  return (
+    <div className="min-h-screen bg-background animate-pulse">
+      <div className="container mx-auto px-4 py-8">
+        <div className="h-10 bg-muted rounded w-4/5 mb-4"></div>
+        <div className="h-4 bg-muted rounded w-1/2 mb-6"></div>
+        <div className="aspect-video bg-muted rounded mb-6"></div>
+        <div className="space-y-3">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="h-4 bg-muted rounded"></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function PostCardSkeleton() {
   return (
     <div className="space-y-4 p-6 border rounded-lg">

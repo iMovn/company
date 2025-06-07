@@ -40,7 +40,7 @@ export function NavDropdownLink({ item }: NavDropdownLinkProps) {
             size={16}
           />
         )}
-        <Link href={itemUrl} className="flex-1">
+        <Link href={itemUrl} className="flex-1 font-bold">
           {item.name}
         </Link>
       </NavigationMenuTrigger>
