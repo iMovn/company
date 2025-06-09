@@ -47,7 +47,7 @@ export default function CategorySidebar({
             asChild
             className="group bg-primary hover:bg-primary/73 text-white text-sm py-2 px-4 mt-2 gap-1 rounded-xl transition-colors duration-200"
           >
-            <Link href="/services">
+            <Link href="/services" prefetch={true}>
               <span>Dịch vụ tại iMovn</span>
               <ArrowUpRight className="group-hover:text-neutral-800" />
             </Link>
@@ -71,6 +71,7 @@ export default function CategorySidebar({
               <Link
                 key={category.id}
                 href={`/${category.slug}`}
+                prefetch={true}
                 className={`block py-1 rounded-md text-base font-normal hover:text-primary ${
                   isActive ? "text-primary" : ""
                 }`}

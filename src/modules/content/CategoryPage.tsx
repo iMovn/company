@@ -5,22 +5,10 @@ import { notFound } from "next/navigation";
 // Dynamic imports for heavy components
 const PostCard = dynamic(() => import("@modules/content/components/PostCard"));
 const CategorySidebar = dynamic(
-  () => import("@modules/content/components/CategorySidebar"),
-  {
-    ssr: true, // vẫn cho SSR vì sidebar quan trọng SEO
-    loading: () => (
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <h3 className="font-semibold mb-3">Đang tải...</h3>
-        <p className="text-sm text-gray-600">Sidebar content</p>
-      </div>
-    ),
-  }
+  () => import("@modules/content/components/CategorySidebar")
 );
 const ReadMoreDialog = dynamic(
-  () => import("@modules/content/components/ReadMoreDialog"),
-  {
-    ssr: true, // vẫn cho SSR vì sidebar quan trọng SEO
-  }
+  () => import("@modules/content/components/ReadMoreDialog")
 );
 
 // Static imports for critical components

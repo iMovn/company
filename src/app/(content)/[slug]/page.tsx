@@ -11,11 +11,16 @@ import {
 import { buildCategoryMetadata, buildPostMetadata } from "@config/metadata";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PostDetail from "@modules/content/PostDetail";
-import CategoryPage from "@modules/content/CategoryPage";
+import dynamic from "next/dynamic";
 
 // Configure default metadata base
 const METADATA_BASE = new URL(DOMAIN_URL);
+const PostDetail = dynamic(() => import("@modules/content/PostDetail"), {
+  ssr: true,
+});
+const CategoryPage = dynamic(() => import("@modules/content/CategoryPage"), {
+  ssr: true,
+});
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -27,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     const [post, category] = await Promise.all([
-      fetchPostBySlug(slug).catch(() => null),
-      fetchCategoryBySlug(slug).catch(() => null),
+      fetchPostBySlug(slug),
+      fetchCategoryBySlug(slug),
     ]);
 
     if (post) return buildPostMetadata(post, slug);
@@ -57,36 +62,28 @@ export default async function ContentPage({ params, searchParams }: Props) {
   const resolvedSearchParams = await searchParams;
 
   // Extract pagination parameters
-  const page = resolvedSearchParams.page
-    ? parseInt(resolvedSearchParams.page as string)
-    : 1;
-  const limit = resolvedSearchParams.limit
-    ? parseInt(resolvedSearchParams.limit as string)
-    : DEFAULT_LIMIT;
+  const page = Number(resolvedSearchParams.page) || 1;
+  const limit = Number(resolvedSearchParams.limit) || DEFAULT_LIMIT;
   const sort_name =
     (resolvedSearchParams.sort_name as string) || DEFAULT_SORT_FIELD;
   const sort_by =
     (resolvedSearchParams.sort_by as "asc" | "desc") || DEFAULT_SORT_DIRECTION;
 
-  // Category query options
-  const categoryOptions = {
-    page,
-    limit,
-    sort_name,
-    sort_by,
-  };
-
   try {
-    const post = await fetchPostBySlug(slug);
+    // Fetch song song cả post và category
+    const [post, categoryWithSidebar] = await Promise.all([
+      fetchPostBySlug(slug),
+      Promise.all([
+        fetchCategoryBySlug(slug, { page, limit, sort_name, sort_by }),
+        fetchSidebarData(SIDEBAR_POSTS_LIMIT),
+      ]),
+    ]);
+
     if (post) {
       return <PostDetail post={post} />;
     }
 
-    const [category, sidebarData] = await Promise.all([
-      fetchCategoryBySlug(slug, categoryOptions),
-      fetchSidebarData(SIDEBAR_POSTS_LIMIT),
-    ]);
-
+    const [category, sidebarData] = categoryWithSidebar;
     if (category) {
       return <CategoryPage category={category} sidebarData={sidebarData} />;
     }

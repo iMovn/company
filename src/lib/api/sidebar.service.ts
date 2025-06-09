@@ -1,6 +1,5 @@
 import { CACHE_TAGS, REVALIDATE_TIMES } from "lib/constants/cache-tags";
 import { API_BASE_URL, DOMAIN_ID } from "lib/constants/global";
-import { cache } from "react";
 import { PostsApiResponse } from "types/all-posts";
 import { Category, CategoryResponse } from "types/categories";
 
@@ -15,7 +14,9 @@ const validateConfig = () => {
 };
 
 // Fetch bài viết mới nhất
-export const fetchRecentPosts = cache(async (limit: number = 5) => {
+export async function fetchRecentPosts(limit: number = 5) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
   try {
     validateConfig();
 
@@ -30,12 +31,15 @@ export const fetchRecentPosts = cache(async (limit: number = 5) => {
     const response = await fetch(
       `${API_BASE_URL}/site/posts?${queryParams.toString()}`,
       {
+        signal: controller.signal,
         next: {
           revalidate: REVALIDATE_TIMES.DYNAMIC,
           tags: [CACHE_TAGS.POSTS, "recent-posts"],
         },
       }
     );
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error(
@@ -57,10 +61,12 @@ export const fetchRecentPosts = cache(async (limit: number = 5) => {
     console.error("Error fetching recent posts:", error);
     return [];
   }
-});
+}
 
 // Fetch All Categoreis Post
-export const fetchAllCategories = cache(async (): Promise<Category[]> => {
+export async function fetchAllCategories(): Promise<Category[]> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
   try {
     validateConfig();
 
@@ -72,12 +78,15 @@ export const fetchAllCategories = cache(async (): Promise<Category[]> => {
     const response = await fetch(
       `${API_BASE_URL}/site/category?${queryParams.toString()}`,
       {
+        signal: controller.signal,
         next: {
           revalidate: REVALIDATE_TIMES.STATIC, // Categories ít thay đổi hơn
           tags: [CACHE_TAGS.CATEGORIES, "all-categories"],
         },
       }
     );
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error(
@@ -104,10 +113,10 @@ export const fetchAllCategories = cache(async (): Promise<Category[]> => {
     console.error("Error fetching categories:", error);
     return [];
   }
-});
+}
 
 // Fetch dữ liệu sidebar (kết hợp cả hai List danh mục _ bài viết mới nhất)
-export const fetchSidebarData = cache(async (recentPostsLimit: number = 5) => {
+export async function fetchSidebarData(recentPostsLimit: number = 5) {
   try {
     const [categories, recentPosts] = await Promise.all([
       fetchAllCategories(),
@@ -125,7 +134,7 @@ export const fetchSidebarData = cache(async (recentPostsLimit: number = 5) => {
       recentPosts: [],
     };
   }
-});
+}
 
 // Helper function để lọc danh mục cha
 export const getParentCategories = (categories: Category[]): Category[] => {

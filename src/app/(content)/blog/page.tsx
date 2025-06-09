@@ -1,7 +1,11 @@
 import { fetchAllCategories } from "lib/api/sidebar.service";
 import { fetchCategoryBySlug } from "lib/api/category.service";
-import BlogSection from "@modules/content/components/BlogSection";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const BlogSection = dynamic(
+  () => import("@modules/content/components/BlogSection")
+);
 
 export const metadata: Metadata = {
   title: "Blog - Khám phá nội dung đa dạng",
