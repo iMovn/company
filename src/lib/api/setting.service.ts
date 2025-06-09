@@ -1,20 +1,23 @@
 // lib/api/setting.service.ts
 import { REVALIDATE_TIMES } from "lib/constants/cache-tags";
 import { API_BASE_URL, DOMAIN_ID } from "lib/constants/global";
-import { cache } from "react";
 import type { SettingResponse, SettingsData } from "types/setting";
 
-export const fetchSettings = cache(async (): Promise<SettingsData> => {
+export async function fetchSettings(): Promise<SettingsData> {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // Timeout sau 5s
     const response = await fetch(
       `${API_BASE_URL}/site/settings?domain_id=${DOMAIN_ID}`,
       {
+        signal: controller.signal,
         next: {
           revalidate: REVALIDATE_TIMES.DYNAMIC,
           tags: ["site-settings"],
         },
       }
     );
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch settings: ${response.status}`);
@@ -35,8 +38,8 @@ export const fetchSettings = cache(async (): Promise<SettingsData> => {
         meta_description: result.data.seo?.meta_description || "",
         meta_og_title: result.data.seo?.meta_og_title || "",
         meta_og_description: result.data.seo?.meta_og_description || "",
-        meta_og_type: result.data.seo?.meta_og_type || "website",
-        meta_og_locale: result.data.seo?.meta_og_locale || "vi_VN",
+        meta_og_type: result.data.seo?.meta_og_type || "",
+        meta_og_locale: result.data.seo?.meta_og_locale || "",
         meta_og_url: result.data.seo?.meta_og_url || "",
         meta_og_site_name: result.data.seo?.meta_og_site_name || "",
         meta_og_image: result.data.seo?.meta_og_image || "",
@@ -80,8 +83,8 @@ export const fetchSettings = cache(async (): Promise<SettingsData> => {
         meta_description: "",
         meta_og_title: "",
         meta_og_description: "",
-        meta_og_type: "website",
-        meta_og_locale: "vi_VN",
+        meta_og_type: "",
+        meta_og_locale: "",
         meta_og_url: "",
         meta_og_site_name: "",
         meta_og_image: "",
@@ -113,4 +116,4 @@ export const fetchSettings = cache(async (): Promise<SettingsData> => {
       home_avatar: "",
     };
   }
-});
+}

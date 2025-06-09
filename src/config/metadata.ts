@@ -1,4 +1,5 @@
 // src/config/metadata.ts
+import { fetchSettings } from "lib/api/setting.service";
 import { Metadata } from "next";
 import { CategoryData } from "types/categories";
 import { Post } from "types/post";
@@ -6,27 +7,35 @@ import { Post } from "types/post";
 const SITE_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 const METADATA_BASE = new URL(SITE_URL);
 
+const settings = await fetchSettings();
+const { seo, company, logo, favicon, home_avatar } = settings;
+
 export const defaultMetadata: Metadata = {
   metadataBase: METADATA_BASE,
   title: {
-    default: "iMovn - Digital Marketing Solutions",
-    template: "%s | iMovn",
+    default:
+      seo.meta_title || seo.meta_og_title || company.name || "Title Default",
+    template: `%s`,
   },
-  description: "Chuyên gia Digital Marketing hàng đầu Việt Nam",
-  applicationName: "iMovn",
-  keywords: [
-    "digital marketing",
-    "thiết kế website",
-    "SEO",
-    "quảng cáo Facebook",
-    "Google Ads",
-  ],
-  creator: "iMovn Team",
-  publisher: "iMovn",
+  description:
+    settings.seo.meta_description ||
+    settings.seo.meta_og_description ||
+    company.description ||
+    "Description Default",
+  alternates: {
+    canonical: seo.canonical || `${SITE_URL}`,
+  },
+  applicationName:
+    seo.meta_title ||
+    seo.meta_og_title ||
+    company.name ||
+    "Application Name Default",
+  creator: seo.meta_author || "Author Team Default",
+  publisher: seo.meta_author || "Publisher Default",
   formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
+    email: !!company.email,
+    address: !!company.address,
+    telephone: !!company.phone,
   },
   robots: {
     index: true,
@@ -39,78 +48,93 @@ export const defaultMetadata: Metadata = {
     },
   },
   icons: {
-    icon: "/favicon.ico",
-    // shortcut: "/favicon-16x16.png",
-    // apple: "/apple-touch-icon.png",
+    icon: favicon || "/favicon.ico",
+    shortcut: favicon || "/favicon-16x16.ico",
+    apple: logo || "/apple-touch-icon.ico",
   },
   openGraph: {
     type: "website",
-    siteName: "iMovn",
-    locale: "vi_VN",
-    url: SITE_URL,
+    siteName: seo.meta_og_site_name || company.name || "Site Name Default",
+    locale: seo.meta_og_locale || "vi_VN",
+    url: seo.meta_og_url || SITE_URL,
     images: [
       {
-        url: new URL("/images/placeholder.png", METADATA_BASE).toString(),
+        url: new URL(
+          home_avatar || seo.meta_og_image || logo || "/images/placeholder.png",
+          METADATA_BASE
+        ).toString(),
         width: 1200,
         height: 630,
-        alt: "iMovn Digital Marketing",
+        alt:
+          seo.meta_og_image_alt ||
+          seo.meta_og_title ||
+          company.name ||
+          "alt-image-default",
       },
     ],
+    description:
+      seo.meta_og_description ||
+      seo.meta_description ||
+      "Meta Description openGraph Default",
   },
   twitter: {
     card: "summary_large_image",
-    title: "iMovn - Digital Marketing Solutions",
-    description: "Chuyên gia Digital Marketing hàng đầu Việt Nam",
-    images: [new URL("/images/placeholder.png", METADATA_BASE).toString()],
+    title: seo.meta_og_title || company.name || "Twitter openGraph Default",
+    description:
+      seo.meta_og_description ||
+      seo.meta_description ||
+      "Twitter Description openGraph Default",
+    images: [
+      new URL(
+        seo.meta_og_image || logo || "/images/placeholder.png",
+        METADATA_BASE
+      ).toString(),
+    ],
+  },
+  verification: {
+    google:
+      seo.google_search_console || "Verification Google Search Console Default",
   },
 };
 
 export function buildPostMetadata(post: Post, slug: string): Metadata {
+  const postTitle = post.meta_title || post.name;
+  const postDescription =
+    post.meta_description || post.description || defaultMetadata.description;
+  const postImage = post.image_url || seo.meta_og_image || logo;
   return {
     ...defaultMetadata,
-    title: post.meta_title || post.name,
-    description:
-      post.meta_description ||
-      post.description ||
-      defaultMetadata.description ||
-      "Add new description!",
+    title: postTitle,
+    description: postDescription || "Add new description!",
     alternates: {
       canonical: post.canonical || `${SITE_URL}/${slug}`,
     },
     openGraph: {
       ...defaultMetadata.openGraph,
-      title: post.meta_title || post.name,
-      description:
-        post.meta_description ||
-        post.description ||
-        defaultMetadata.description ||
-        "Add new description!",
+      title: postTitle,
+      description: postDescription || "Add new description!",
       type: "article",
       publishedTime: post.created_at,
       modifiedTime: post.updated_at,
       authors: post.users ? [post.users.name] : [],
       tags: post.categories?.map((c) => c.name) || [],
-      ...(post.image_url && {
+      ...(postImage && {
         images: [
           {
-            url: new URL(post.image_url, METADATA_BASE).toString(),
+            url: new URL(postImage, METADATA_BASE).toString(),
             width: 1200,
             height: 630,
-            alt: post.name,
+            alt: postTitle,
           },
         ],
       }),
     },
     twitter: {
       ...defaultMetadata.twitter,
-      title: post.meta_title || post.name,
-      description:
-        post.meta_description ||
-        post.description ||
-        defaultMetadata.description ||
-        "Add new description!",
-      ...(post.image_url && {
-        images: [new URL(post.image_url, METADATA_BASE).toString()],
+      title: postTitle,
+      description: postDescription || "Add new description!",
+      ...(postImage && {
+        images: [new URL(postImage, METADATA_BASE).toString()],
       }),
     },
     other: {
@@ -126,46 +150,42 @@ export function buildCategoryMetadata(
   category: CategoryData,
   slug: string
 ): Metadata {
+  const categoryTitle = category.details.meta_title || category.details.name;
+  const categoryDescription =
+    category.details.meta_description ||
+    category.details.description ||
+    defaultMetadata.description ||
+    "Add new description category";
+  const categoryImage = category.details.image_url || seo.meta_og_image || logo;
   return {
     ...defaultMetadata,
-    title: category.details.meta_title || category.details.name,
-    description:
-      category.details.meta_description ||
-      category.details.description ||
-      defaultMetadata.description ||
-      "Add new description!",
+    title: categoryTitle,
+    description: categoryDescription,
     alternates: {
       canonical: category.details.canonical || `${SITE_URL}/${slug}`,
     },
     openGraph: {
       ...defaultMetadata.openGraph,
-      title: category.details.meta_title || category.details.name,
-      description:
-        category.details.meta_description ||
-        category.details.description ||
-        defaultMetadata.description ||
-        "Add new description!",
-      ...(category.details.image_url && {
+      title: categoryTitle,
+      description: categoryDescription,
+      type: "article",
+      ...(categoryImage && {
         images: [
           {
-            url: new URL(category.details.image_url, METADATA_BASE).toString(),
+            url: new URL(categoryImage, METADATA_BASE).toString(),
             width: 1200,
             height: 630,
-            alt: category.details.name,
+            alt: categoryTitle,
           },
         ],
       }),
     },
     twitter: {
       ...defaultMetadata.twitter,
-      title: category.details.meta_title || category.details.name,
-      description:
-        category.details.meta_description ||
-        category.details.description ||
-        defaultMetadata.description ||
-        "Add new description!",
-      ...(category.details.image_url && {
-        images: [new URL(category.details.image_url, METADATA_BASE).toString()],
+      title: categoryTitle,
+      description: categoryDescription,
+      ...(categoryImage && {
+        images: [new URL(categoryImage, METADATA_BASE).toString()],
       }),
     },
     other: {
@@ -174,7 +194,7 @@ export function buildCategoryMetadata(
   };
 }
 
-export function buildPostSchemaMarkup(post: Post, slug: string) {
+function buildPostSchemaMarkup(post: Post, slug: string) {
   return {
     "application/ld+json": JSON.stringify({
       "@context": "https://schema.org",
@@ -210,10 +230,7 @@ export function buildPostSchemaMarkup(post: Post, slug: string) {
   };
 }
 
-export function buildCategorySchemaMarkup(
-  category: CategoryData,
-  slug: string
-) {
+function buildCategorySchemaMarkup(category: CategoryData, slug: string) {
   return {
     "application/ld+json": JSON.stringify({
       "@context": "https://schema.org",
