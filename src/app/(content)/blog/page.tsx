@@ -2,6 +2,8 @@ import { fetchAllCategories } from "lib/api/sidebar.service";
 import { fetchCategoryBySlug } from "lib/api/category.service";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Breadcrumb from "@components/common/breadcrumb";
+import { Container } from "@components/ui/Containers";
 
 const BlogSection = dynamic(
   () => import("@modules/content/components/BlogSection")
@@ -76,7 +78,7 @@ export default async function BlogDefaultPage() {
       activeRootCategories.map(async (category) => {
         const categoryData = await fetchCategoryBySlug(category.slug, {
           page: 1,
-          limit: 6,
+          limit: 7,
           sort_by: "desc",
         });
 
@@ -94,17 +96,28 @@ export default async function BlogDefaultPage() {
           ...categoryData.details,
           posts: categoryData.items.data,
           totalPosts: categoryData.items.total,
-          hasMorePosts: categoryData.items.total > 6,
+          hasMorePosts: categoryData.items.total > 7,
         };
       })
     );
 
+    const breadcrumbs = [
+      { name: "Trang chủ", slug: "/", is_active: false },
+      { name: "Blog", slug: "blog", is_active: true },
+    ];
+
     return (
-      <div className="max-w-screen-xl mx-auto px-4 py-12 space-y-16">
+      <Container size="lg" className="px-0">
+        <div className="header-blog mb-[93px]">
+          <Breadcrumb items={breadcrumbs} />
+          <h1 className="md:text-6xl text-3xl font-semibold font-archivo mb-3">
+            Blog & Cẩm Nang
+          </h1>
+        </div>
         {categoriesWithPosts.map((category) => (
           <BlogSection key={category.id} category={category} />
         ))}
-      </div>
+      </Container>
     );
   } catch (error) {
     console.error("Error loading blog page:", error);

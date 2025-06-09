@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Post } from "types/categories";
 import { formatDateVi } from "lib/utils/format";
+import { ArrowUpRight } from "lucide-react";
 
 interface BlogSectionProps {
   category: {
@@ -17,20 +18,6 @@ interface BlogSectionProps {
 }
 
 export default function BlogSection({ category }: BlogSectionProps) {
-  //   if (!category.posts || category.posts.length === 0) {
-  //     return (
-  //       <section className="mb-12">
-  //         <h2 className="text-2xl font-bold text-gray-800 mb-4">
-  //           {category.name}
-  //         </h2>
-  //         <div className="bg-gray-50 rounded-lg p-8 text-center">
-  //           <p className="text-gray-500">
-  //             Chưa có bài viết nào trong danh mục này
-  //           </p>
-  //         </div>
-  //       </section>
-  //     );
-  //   }
   // Ẩn hoàn toàn danh mục nếu không có bài viết
   if (
     !category.posts ||
@@ -42,56 +29,49 @@ export default function BlogSection({ category }: BlogSectionProps) {
 
   return (
     <section className="mb-12">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-4 border-b-2 border-primary">
+        <div className="font-archivo">
+          <h2 className="md:text-3xl text-2xl font-bold capitalize text-foreground/90">
             {category.name}
-            <span className="ml-2 text-sm font-normal text-gray-500">
-              ({category.totalPosts} bài viết)
-            </span>
           </h2>
-          {category.description && (
-            <p className="text-gray-600 mt-2 max-w-2xl">
-              {category.description}
-            </p>
-          )}
         </div>
 
         {category.hasMorePosts && (
           <Link
             href={`${category.slug}`}
-            className="text-blue-600 hover:underline whitespace-nowrap flex items-center"
+            className="group text-primary-300 text-sm hover:text-primary whitespace-nowrap flex items-center gap-1 uppercase"
           >
-            Xem tất cả <span className="ml-1">→</span>
+            <span>Xem thêm</span>{" "}
+            <ArrowUpRight size={19} className="group-hover:text-warning" />
           </Link>
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {category.posts.map((post) => (
           <article
             key={post.id}
-            className="group bg-white rounded-lg shadow hover:shadow-md transition-shadow overflow-hidden h-full flex flex-col"
+            className="group rounded-lg shadow-sm hover:shadow-md transition-shadow hover:text-primary overflow-hidden h-full flex flex-col dark:bg-neutral-1000/70 bg-neutral-0 hover:dark:bg-neutral-500"
           >
             <Link href={`${post.slug}`} className="flex flex-col h-full">
-              <div className="relative aspect-video overflow-hidden">
+              <div className="relative w-full h-48 overflow-hidden">
                 <Image
                   src={post.image_url || "/placeholder.png"}
                   alt={post.name}
-                  width={600}
-                  height={400}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
+                  className="object-cover select-none hover:scale-105 transition-transform duration-300 rounded-t-md"
                   priority={false}
                 />
               </div>
-              <div className="p-4 flex-grow">
-                <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 mb-2">
+              <div className="p-5 flex-grow">
+                <h3 className="text-lg font-bold line-clamp-2 mb-2 dark:text-neutral-200 group-hover:dark:text-neutral-950">
                   {post.name}
                 </h3>
                 <p className="text-gray-600 text-sm line-clamp-3 mb-3">
                   {post.description}
                 </p>
-                <div className="mt-auto pt-2 border-t border-gray-100">
+                <div className="mt-auto pt-3 border-t border-primary-100">
                   <div className="flex justify-between items-center text-xs text-gray-500">
                     <span>{formatDateVi(post.created_at)}</span>
                   </div>
