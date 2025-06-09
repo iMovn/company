@@ -18,7 +18,7 @@ export default function MarketingLayout({
 }) {
   return (
     <>
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 mb-16">{children}</main>
     </>
   );
 }

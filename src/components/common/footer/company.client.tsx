@@ -22,7 +22,7 @@ export function FooterContactInfo({
   email,
 }: FooterContactInfoProps) {
   return (
-    <section className="text-sm space-x-4 ml-3 pt-2 text-neutral-300">
+    <section className="text-sm space-x-4 ml-3 pt-2 dark:text-neutral-300 text-primary">
       {address && (
         <Link href={linkMap || "#"} rel="nofollow" target="_blank">
           <Tooltip>

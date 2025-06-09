@@ -1,17 +1,28 @@
 "use client";
 
 import { ContactForm } from "../form/ContactForm";
-import SpotlightCard from "@components/ui/SpotlightCard";
 import { Database, Phone, Star } from "lucide-react";
-import CountUp from "@components/ui/CountUp";
+import { cn } from "lib/utils/utils";
+import dynamic from "next/dynamic";
+
+const SpotlightCard = dynamic(() => import("@components/ui/SpotlightCard"), {
+  ssr: false,
+});
+const CountUp = dynamic(() => import("@components/ui/CountUp"), {
+  ssr: false,
+});
 
 export default function FooterClient() {
   return (
     <SpotlightCard
-      className="my-20 rounded-2xl shadow-lg"
+      className={cn(
+        "my-20 rounded-3xl shadow-lg shadow-neutral-300 dark:shadow-neutral-1000",
+        "dark:border-0 dark:border-transparent dark:bg-radial-[at_0%_100%] dark:from-neutral-950/80 dark:via-neutral-900 dark:to-transparent",
+        "bg-neutral-50 border-[1px] border-primary/30"
+      )}
       spotlightColor="rgba(0, 229, 255, 0.3)"
     >
-      <section className="form-group grid md:grid-cols-[40%_58%] gap-4 md:py-0 py-3 dark:bg-neutral-950/80 bg-neutral-50">
+      <section className="form-group grid md:grid-cols-[40%_58%] gap-4 md:py-0 py-3  dark:bg-neutral-1000/70">
         {/* Left content */}
         <div className="md:p-8 p-5 space-y-6">
           <div>

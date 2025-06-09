@@ -1,6 +1,6 @@
 /* ============ DARK THEME ============ */
 .dark {
-  --background: var(--color-neutral-1000);
+  --background: var(--color-neutral-950);
   --foreground: var(--color-neutral-50);
   --border: oklch(from var(--color-neutral-800) l c h / 0.5);
   --input: oklch(from var(--color-neutral-800) l c h / 0.3);

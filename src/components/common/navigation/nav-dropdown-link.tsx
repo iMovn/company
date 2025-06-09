@@ -61,7 +61,7 @@ export function NavDropdownLink({ item }: NavDropdownLinkProps) {
                         href={childUrl}
                         className={cn(
                           "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                          "hover:bg-neutral-800 hover:text-neutral-100 focus:bg-neutral-800 focus:text-neutral-100"
+                          "hover:bg-neutral-800 hover:text-neutral-0 focus:bg-neutral-800 focus:text-neutral-100"
                         )}
                       >
                         <div className="text-sm font-medium font-archivo leading-none  flex items-center">
@@ -75,7 +75,7 @@ export function NavDropdownLink({ item }: NavDropdownLinkProps) {
                           )}
                           {child.name}
                         </div>
-                        <p className="line-clamp-2 text-xs leading-snug dark:text-neutral-400 text-neutral-700 mt-2">
+                        <p className="line-clamp-2 text-xs leading-snug dark:text-neutral-400 text-neutral-700 hover:text-neutral-100 mt-2">
                           {child.description}
                         </p>
                       </Link>
