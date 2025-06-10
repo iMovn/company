@@ -1,25 +1,24 @@
 import { fetchAllCategories } from "lib/api/sidebar.service";
 import { fetchCategoryBySlug } from "lib/api/category.service";
-import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Breadcrumb from "@components/common/breadcrumb";
 import { Container } from "@components/ui/Containers";
+import { defaultMetadata } from "@config/metadata";
 
 const BlogSection = dynamic(
   () => import("@modules/content/components/BlogSection")
 );
 
-export const metadata: Metadata = {
+export const metadata = {
+  ...defaultMetadata,
   title: "Blog - Khám phá nội dung đa dạng",
   description:
     "Tìm hiểu các chủ đề thú vị qua những bài viết chất lượng cao được phân loại theo danh mục.",
-  keywords: "blog, bài viết, tin tức, kiến thức",
   openGraph: {
+    type: "article",
     title: "Blog - Khám phá nội dung đa dạng",
     description:
       "Tìm hiểu các chủ đề thú vị qua những bài viết chất lượng cao được phân loại theo danh mục.",
-    type: "website",
-    locale: "vi_VN",
     url: "/blog",
   },
   twitter: {

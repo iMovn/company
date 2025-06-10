@@ -1,8 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Post } from "types/categories";
-import { formatDateVi } from "lib/utils/format";
 import { ArrowUpRight } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Button } from "@components/ui/Button";
+
+const BlogCardOne = dynamic(() => import("./BlogCardOne"));
+const BlogCardTwo = dynamic(() => import("./BlogCardTwo"));
 
 interface BlogSectionProps {
   category: {
@@ -27,6 +30,9 @@ export default function BlogSection({ category }: BlogSectionProps) {
     return null;
   }
 
+  const firstThreePosts = category.posts.slice(0, 3);
+  const remainingPosts = category.posts.slice(3);
+
   return (
     <section className="mb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-4 border-b-2 border-primary">
@@ -39,7 +45,7 @@ export default function BlogSection({ category }: BlogSectionProps) {
         {category.hasMorePosts && (
           <Link
             href={`${category.slug}`}
-            className="group text-primary-300 text-sm hover:text-primary whitespace-nowrap flex items-center gap-1 uppercase"
+            className="md:flex hidden group text-primary-300 text-sm hover:text-primary whitespace-nowrap items-center gap-1 uppercase"
           >
             <span>Xem thêm</span>{" "}
             <ArrowUpRight size={19} className="group-hover:text-warning" />
@@ -47,40 +53,36 @@ export default function BlogSection({ category }: BlogSectionProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {category.posts.map((post) => (
-          <article
-            key={post.id}
-            className="group rounded-lg shadow-sm hover:shadow-md transition-shadow hover:text-primary overflow-hidden h-full flex flex-col dark:bg-neutral-1000/70 bg-neutral-0 hover:dark:bg-neutral-500"
-          >
-            <Link href={`${post.slug}`} className="flex flex-col h-full">
-              <div className="relative w-full h-48 overflow-hidden">
-                <Image
-                  src={post.image_url || "/placeholder.png"}
-                  alt={post.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 192px, (max-width: 1024px) 224px, 256px"
-                  className="object-cover select-none hover:scale-105 transition-transform duration-300 rounded-t-md"
-                  priority={false}
-                />
-              </div>
-              <div className="p-5 flex-grow">
-                <h3 className="text-lg font-bold line-clamp-2 mb-2 dark:text-neutral-200 group-hover:dark:text-neutral-950">
-                  {post.name}
-                </h3>
-                <p className="text-gray-600 text-sm line-clamp-3 mb-3">
-                  {post.description}
-                </p>
-                <div className="mt-auto pt-3 border-t border-primary-100">
-                  <div className="flex justify-between items-center text-xs text-gray-500">
-                    <span>{formatDateVi(post.created_at)}</span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </article>
+      {/* Grid 3 bài đầu tiên */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+        {firstThreePosts.map((post) => (
+          <BlogCardOne key={post.id} post={post} />
         ))}
       </div>
+
+      {/* Grid các bài còn lại (nếu có) */}
+      {remainingPosts.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-5">
+          {remainingPosts.map((post) => (
+            <BlogCardTwo key={post.id} post={post} />
+          ))}
+        </div>
+      )}
+
+      {category.hasMorePosts && (
+        <Button
+          asChild
+          className="group md:hidden mt-6 text-neutral-50 font-bold"
+        >
+          <Link
+            href={`${category.slug}`}
+            className="flex text-sm hover:text-primary whitespace-nowrap items-center gap-1 uppercase"
+          >
+            <span>Xem thêm</span>{" "}
+            <ArrowUpRight size={19} className="text-neutral-950" />
+          </Link>
+        </Button>
+      )}
     </section>
   );
 }
