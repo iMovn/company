@@ -1,3 +1,9 @@
+import { Hero } from "@modules/home/Hero";
+
 export default function Home() {
-  return <h1>Hello word</h1>;
+  return (
+    <>
+      <Hero />
+    </>
+  );
 }

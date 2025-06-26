@@ -31,7 +31,7 @@ export default async function FooterServer() {
       {/* Radial gradient for the container to give a faded look */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-neutral-950"></div>
 
-      <Container as="footer" size="md" className="my-32 relative">
+      <Container as="footer" id="footer" size="md" className="my-32 relative">
         {/* Settings Content */}
         {settings.content?.content && (
           <section
