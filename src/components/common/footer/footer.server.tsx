@@ -19,7 +19,7 @@ export default async function FooterServer() {
   const parentMenus = menus.filter((menu) => !menu.parent_id);
 
   return (
-    <div className="relative flex w-full items-center justify-center bg-background">
+    <div className="relative flex w-full mt-6 items-center justify-center bg-background">
       <div
         className={cn(
           "absolute inset-0",

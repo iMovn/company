@@ -1,5 +1,5 @@
 "use client";
-import { AnimatedTooltip } from "@components/ui/Animated/Tooltip/animated-tooltip";
+import { AnimatedTooltip } from "@components/ui/Tooltip/animated-tooltip";
 import { Button } from "@components/ui/Button";
 import { Container } from "@components/ui/Containers";
 import Link from "next/link";
@@ -47,7 +47,7 @@ export const Hero = () => {
   return (
     <Container size="md" className="space-y-8">
       <section className="space-y-6">
-        <h2 className="flex flex-col md:text-8xl text-5xl font-archivo font-semibold">
+        <h2 className="flex flex-col md:text-7xl md:leading-20 text-5xl font-archivo font-bold">
           <div>
             Thiết kế<span className="text-primary">.</span>
           </div>
@@ -64,13 +64,13 @@ export const Hero = () => {
             tôi đồng hành cùng doanh nghiệp trên hành trình số hóa và bứt phá
             doanh thu.
           </p>
-          <p className="dark:text-neutral-400 text-neutral-800 font-bold">
-            #3 giá trị cốt lõi:
+          <p className="dark:text-neutral-400 text-neutral-800 font-semibold text-base">
+            <span className="text-primary font-bold">#3</span> giá trị cốt lõi:
           </p>
           <ul className="list-disc ml-6">
-            <li>Thiết kế ấn tượng & Tối ưu UX/UI</li>
-            <li>Phát triển Website & Ứng dụng mạnh mẽ</li>
-            <li>Chiến lược tăng trưởng bền vững</li>
+            <li>Thiết kế ấn tượng & Tối ưu UX/UI, SEO</li>
+            <li>Phát triển Website & App công nghệ mạnh mẽ</li>
+            <li>Chiến lược tăng trưởng với hệ thống bền vững</li>
           </ul>
         </div>
       </section>
