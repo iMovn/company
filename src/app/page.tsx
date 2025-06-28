@@ -1,4 +1,5 @@
 import Hero from "@modules/home/Hero";
+import NewsPosts from "@modules/home/NewPost";
 import Partner from "@modules/home/Partner";
 import Services from "@modules/home/Services";
 import FancyTestimonials from "@modules/home/Testimonials";
@@ -12,6 +13,7 @@ export default function Home() {
       <Services />
       <WhyPartner />
       <FancyTestimonials />
+      <NewsPosts />
     </>
   );
 }

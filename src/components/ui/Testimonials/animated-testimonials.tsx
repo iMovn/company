@@ -127,7 +127,7 @@ export const AnimatedTestimonials = ({
                     (prev - 1 + testimonials.length) % testimonials.length
                 )
               }
-              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
+              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-primary-600"
             >
               <ArrowLeft className="h-5 w-5 text-black transition-transform duration-300 group-hover/button:rotate-12 dark:text-neutral-400" />
             </button>
@@ -135,7 +135,7 @@ export const AnimatedTestimonials = ({
               onClick={() =>
                 setActive((prev) => (prev + 1) % testimonials.length)
               }
-              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
+              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-primary-600"
             >
               <ArrowRight className="h-5 w-5 text-black transition-transform duration-300 group-hover/button:-rotate-12 dark:text-neutral-400" />
             </button>
