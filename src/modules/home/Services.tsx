@@ -66,7 +66,7 @@ const ItemServiceData = [
   },
 ];
 
-export const Services = () => {
+export default function Services() {
   return (
     <Container as="section" size="md" className="mt-32">
       <div className="head">
@@ -123,4 +123,4 @@ export const Services = () => {
       </div>
     </Container>
   );
-};
+}

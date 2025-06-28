@@ -1,6 +1,8 @@
-import { Hero } from "@modules/home/Hero";
-import { Partner } from "@modules/home/Partner";
-import { Services } from "@modules/home/Services";
+import Hero from "@modules/home/Hero";
+import Partner from "@modules/home/Partner";
+import Services from "@modules/home/Services";
+import FancyTestimonials from "@modules/home/Testimonials";
+import WhyPartner from "@modules/home/WhyPartner";
 
 export default function Home() {
   return (
@@ -8,6 +10,8 @@ export default function Home() {
       <Hero />
       <Partner />
       <Services />
+      <WhyPartner />
+      <FancyTestimonials />
     </>
   );
 }

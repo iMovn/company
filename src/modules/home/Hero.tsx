@@ -43,7 +43,7 @@ const people = [
   },
 ];
 
-export const Hero = () => {
+export default function Hero() {
   return (
     <Container size="md" className="space-y-8">
       <section className="space-y-6">
@@ -90,4 +90,4 @@ export const Hero = () => {
       </div>
     </Container>
   );
-};
+}

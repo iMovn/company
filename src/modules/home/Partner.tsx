@@ -16,7 +16,7 @@ const TechCodeLogo = [
   { src: "/partner/vercel-imovn.png", alt: "Apexs Logo" },
 ];
 
-export const Partner = () => {
+export default function Partner() {
   return (
     <Container size="md" as="section">
       <h4 className="text-sm dark:text-neutral-400 text-neutral-800 font-bold mt-8">
@@ -59,4 +59,4 @@ export const Partner = () => {
       </div>
     </Container>
   );
-};
+}
